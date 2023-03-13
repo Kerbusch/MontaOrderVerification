@@ -1,10 +1,11 @@
 ﻿namespace OrderLogic; 
 
 public class OrderStatus {
-	public bool checkComplete(ref Order order) {
+	//check if the given order is complete based on the skus and the expected skus of the order
+	public static Order checkComplete(Order order) {
 		//walk trough the expected_skus array and remove sku if it is present.
-		int[] expected_skus = order.expected_skus;
-		List<int> excess_skus = new List<int>();
+		long[] expected_skus = order.expected_skus;
+		List<long> excess_skus = new List<long>();
 		
 		foreach (var sku in order.skus) {
 			if (expected_skus.Contains(sku) ) {
@@ -23,16 +24,26 @@ public class OrderStatus {
 		if (expected_skus.Length == 0 && excess_skus.Count == 0) {
 			order.is_complete = true;
 			order.has_been_checked = true;
-			return true;
+			return order;
 		}
 
 		//else return false and the order is not complete
 		order.is_complete = false;
 		order.has_been_checked = true;
-		return false;
+		return order;
 	}
 
-	public string getOrderStatus(Order order) {
+	//run checkComplete() on all orders in the parameter list
+	public static Order[] checkComplete(Order[] orders) {
+		for (int i = 0; i < orders.Length; i++) {
+			orders[i] = checkComplete(orders[i]);
+		}
+
+		return orders;
+	}
+
+	//return a string feedback based on the bool in a order.
+	public static string getOrderStatus(Order order) {
 		//generate a string that describes the order status.
 		if (order.expected_skus == null || order.expected_skus.Length == 0) {
 			return "The order has no expected sku's. This could be an error.";
@@ -49,7 +60,8 @@ public class OrderStatus {
 		return "The order has not been checked. Run checkComplete first!";
 	}
 
-	public void printOrderInConsole(Order order) {
+	//print the order feedback in the console. Uses: getOrderStatus();
+	public static void printOrderInConsole(Order order) {
 		//get the string from getOrderStatus and print it to the console
 		Console.WriteLine(getOrderStatus(order));
 	}
