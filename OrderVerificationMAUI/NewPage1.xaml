@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OrderVerificationMAUI.NewPage1"
+             Title="PhotoPage">
+
+  <Grid>
+    
+    <Grid.RowDefinitions>
+      <RowDefinition Height="100" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="100" />
+    </Grid.RowDefinitions>
+    
+    <Label  Grid.Row ="0"
+            Text="Here is the photo that you have captured"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+    
+    <Image Grid.Row="1" Source="C:\\\\Users\\jojoo\\Source\\Repos\\Kerbusch\\MontaOrderVerification\\OrderVerificationMAUI\\picture.jpg" Aspect="AspectFit"/>
+    
+  </Grid> 
+        
+</ContentPage>
