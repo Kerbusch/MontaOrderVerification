@@ -1,0 +1,26 @@
+<annotation>
+	<folder>KoffieKeto</folder>
+	<filename>KoffieKeto (13).png</filename>
+	<path>C:\Users\Sua.Wilhelm\HU\DatasetOOT\Training\KoffieKeto\KoffieKeto (13).png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1042</width>
+		<height>2312</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>KoffieKeto</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>247</xmin>
+			<ymin>1009</ymin>
+			<xmax>689</xmax>
+			<ymax>1275</ymax>
+		</bndbox>
+	</object>
+</annotation>
