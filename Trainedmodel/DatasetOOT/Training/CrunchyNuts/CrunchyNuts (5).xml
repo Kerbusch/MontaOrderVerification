@@ -1,0 +1,26 @@
+<annotation>
+	<folder>CrunchyNuts</folder>
+	<filename>CrunchyNuts (5).png</filename>
+	<path>C:\Users\Sua.Wilhelm\HU\DatasetOOT\Training\CrunchyNuts\CrunchyNuts (5).png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1029</width>
+		<height>2284</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>CrunchyNuts</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>239</xmin>
+			<ymin>624</ymin>
+			<xmax>790</xmax>
+			<ymax>1968</ymax>
+		</bndbox>
+	</object>
+</annotation>
