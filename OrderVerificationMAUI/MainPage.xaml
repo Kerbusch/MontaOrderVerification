@@ -9,8 +9,6 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            
-
             <Label
                 Text="Taking photos of a product for the database"
                 SemanticProperties.HeadingLevel="Level1"

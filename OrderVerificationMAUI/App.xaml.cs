@@ -9,6 +9,7 @@ public partial class App : Application
 		InitializeComponent();
 
 		MainPage = new AppShell();
+        //make app fullscreen
         Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
         {
 #if WINDOWS

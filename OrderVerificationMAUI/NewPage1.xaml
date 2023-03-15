@@ -12,10 +12,7 @@
       <RowDefinition Height="100" />
     </Grid.RowDefinitions>
     
-    <Label  Grid.Row ="0"
-            Text="Here is the photo that you have captured"
-            VerticalOptions="Center"
-            HorizontalOptions="Center" />
+    <Label  Grid.Row ="0" Text="Here is the photo that you have captured" VerticalOptions="Center" HorizontalOptions="Center" />
     
     <Image Grid.Row="1" Source="C:\\\\Users\\jojoo\\Source\\Repos\\Kerbusch\\MontaOrderVerification\\OrderVerificationMAUI\\picture.jpg" Aspect="AspectFit"/>
     
