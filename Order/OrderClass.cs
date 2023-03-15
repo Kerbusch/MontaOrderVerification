@@ -1,7 +1,7 @@
 ﻿namespace OrderLogic; 
 
-public struct Order {
-	// order struct containing the current sku's in the order, the expected sku's
+public class Order {
+	// order class (using class because struct are pass by value and not reference) containing the current sku's in the order, the expected sku's
 	public uint id { get; set; }
 	public long[] skus { get; set; } //skus currently in the order
 	public long[] expected_skus { get; init; }
@@ -9,8 +9,11 @@ public struct Order {
 	public bool is_complete { get; set; }
 	public DateTime created_on { get; init; }
 
+	public Order() {
+	}
+
 	//constructor that takes: id, skus, expected_skus and creates a order with this
-	public Order(uint id, long[] skus, long[] expected_skus) : this() {
+	public Order(uint id, long[] skus, long[] expected_skus) {
 		this.id = id;
 		this.skus = skus;
 		this.expected_skus = expected_skus;
