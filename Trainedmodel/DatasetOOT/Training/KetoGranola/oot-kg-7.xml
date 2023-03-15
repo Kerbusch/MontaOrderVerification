@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Training</folder>
+	<filename>oot-kg-7.png</filename>
+	<path>C:\Users\Sua.Wilhelm\HU\Dataset OOT\Training\oot-kg-7.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>781</width>
+		<height>586</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>KetoGranola</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>508</xmin>
+			<ymin>389</ymin>
+			<xmax>649</xmax>
+			<ymax>499</ymax>
+		</bndbox>
+	</object>
+</annotation>
