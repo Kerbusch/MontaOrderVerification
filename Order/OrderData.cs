@@ -7,7 +7,7 @@ namespace OrderLogic;
 public class OrderData
 {
     private uint _id_counter = 0; //counter for making new orders
-    private List<Order> _orders; //list of orders
+    private List<Order> _orders = new List<Order>(); //list of orders
     private string _file_path; //path to the json file for saving
 
     //load from file as constructor
@@ -36,12 +36,18 @@ public class OrderData
         try {
             _orders = JsonSerializer.Deserialize<List<Order>>(json_string);
         }
-        catch {
-            Console.WriteLine("JsonSerializer could not deserialize the json string");
+        catch (ArgumentNullException) {
+            Console.WriteLine("JsonSerializer.Deserialize returned ArgumentNullException");
             _orders = new List<Order>();
         }
-
-        //todo: set _id_counter;
+        catch (JsonException) {
+            Console.WriteLine("JsonSerializer.Deserialize returned JsonException");
+            _orders = new List<Order>();
+        }
+        catch (NotSupportedException) {
+            Console.WriteLine("JsonSerializer.Deserialize returned NotSupportedException");
+            _orders = new List<Order>();
+        }
     }
 
     //save the local order list to a file
@@ -75,7 +81,7 @@ public class OrderData
         return ref _orders;
     }
 
-    //return order based on id. THIS DOES NOT RETURN A REFERENCE;
+    //return order based on id. This can be used to find order
     public bool tryGetOrder(uint id, out Order result) {
         for (int i = 0; i < _orders.Count; i++) {
             if (_orders[i].id == id) {
@@ -119,36 +125,5 @@ public class OrderData
     //remove the order from the local list
     public bool removeOrder(Order order) {
      return _orders.Remove(order);
-    }
-
-    //find a order with the given id, the first item (bool) is to check if it's found
-    public bool findOrder(uint id, out Order result) {
-        //go trough all orders and return true + the order if its found
-        foreach (Order order in _orders) {
-            if (order.id == id) {
-                result = order;
-                return true;
-            }
-        }
-
-        //if there is nog order found it returns a false and a new empty order
-        result = new Order();
-        return false;
-    }
-
-    //replace order used for editing a order
-    public void replaceOrder(Order order_to_replace, Order replacement_order) {
-     int index = _orders.FindIndex(s => s == order_to_replace);
-     if (index != -1) {
-         _orders[index] = replacement_order;
-     }
-    }
-
-    //replace a order based on id of the order its replacing
-    public void replaceOrder(int id, Order replacement_order) {
-     int index = _orders.FindIndex(s => s.id == id);
-     if (index != -1) {
-         _orders[index] = replacement_order;
-     }
     }
 }

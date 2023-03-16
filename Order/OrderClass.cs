@@ -10,6 +10,12 @@ public class Order {
 	public DateTime created_on { get; init; }
 
 	public Order() {
+		id = 0;
+		skus = new long[] { };
+		expected_skus = new long[] { };
+		has_been_checked = false;
+		is_complete = false;
+		created_on = DateTime.Now;
 	}
 
 	//constructor that takes: id, skus, expected_skus and creates a order with this
@@ -30,6 +36,8 @@ public class Order {
 		lhs.has_been_checked == rhs.has_been_checked &&
 		lhs.is_complete == rhs.is_complete &&
 		lhs.created_on == rhs.created_on;
+	
+	
 
 	public static bool operator !=(Order lhs, Order rhs) =>
 		!(lhs == rhs);
