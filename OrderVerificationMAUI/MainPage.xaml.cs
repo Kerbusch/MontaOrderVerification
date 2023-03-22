@@ -2,7 +2,7 @@
 
 public partial class MainPage : ContentPage
 {
-	bool input = false;
+	string sku_number;
 
 	public MainPage()
 	{
@@ -76,9 +76,12 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private void Clicked_enter(object sender, EventArgs e)
+    private async void Clicked_enter(object sender, EventArgs e)
     {
-        SkuEntry.Text = "To next page";
+        sku_number = SkuEntry.Text;
+
+        //switch to the photo showing page
+        await Navigation.PushAsync(new Capture_picture(sku_number));
     }
 }
 

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OrderVerificationMAUI.Capture_picture"
+             Title="Capture_picture">
+
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Grid.Column="0"
+            Grid.Row="0"
+            RowSpacing="10"
+            ColumnSpacing="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition />
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+
+            <Label
+                Text="Live Feed:"
+                VerticalOptions="End" 
+                HorizontalOptions="Center"
+                FontSize="Header"/>
+
+            <Image 
+                x:Name="live_image"
+                Grid.Row="1" 
+                Source=""
+                Aspect="AspectFit"/>
+
+            <Label
+                Grid.Row="3"
+                Text="Last picture:"
+                VerticalOptions="End" 
+                HorizontalOptions="Center"
+                FontSize="Header"/>
+
+            <Image 
+                x:Name="last_image"
+                Grid.Row="4" 
+                Source="C:\\Users\\jarno\\OneDrive\\Documenten\\MontaOrderVerification\\OrderVerificationMAUI\\missing_first_picture.jpg"
+                Aspect="AspectFit"/>
+
+        </Grid>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="0"
+            RowSpacing="10"
+            ColumnSpacing="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="2*"/>
+                <RowDefinition />
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                x:Name="Sku_label"
+                Grid.ColumnSpan="3"
+                Text="sku number: "
+                VerticalOptions="Start" 
+                HorizontalOptions="End"
+                FontSize="Medium"/>
+
+            <Grid
+                Grid.Column="1"
+                Grid.Row="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Label
+                    Text="Pictures left:"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center"
+                    FontSize="Header"/>
+
+                <Label
+                    x:Name="picture_counter"
+                    Grid.Row="1"
+                    Text=""
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center"
+                    FontSize="Header"/>
+            </Grid>
+
+            <Button
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="Take next picture"
+                Clicked="ClickedNextPicture"
+                FontSize="Large"
+                CornerRadius="10"
+                BorderWidth="3"
+                TextColor="Black"
+                BorderColor="Black"
+                BackgroundColor="#FFFF7a"/>
+
+            <Button
+                Grid.Row="4"
+                Grid.Column="1"
+                Text="Retake last picture"
+                Clicked="ClickedDeleteLastPicture"
+                FontSize="Large"
+                CornerRadius="10"
+                BorderWidth="3"
+                TextColor="Black"
+                BorderColor="Black"
+                BackgroundColor="#FFFF7a"/>
+
+        </Grid>
+
+
+    </Grid>
+    
+</ContentPage>
