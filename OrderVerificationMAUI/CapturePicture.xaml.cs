@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace OrderVerificationMAUI;
 
-public partial class Capture_picture : ContentPage
+public partial class CapturePicture : ContentPage
 {
     string sku_number;
     string path;
@@ -12,7 +12,7 @@ public partial class Capture_picture : ContentPage
     int total_pictures = 5;
 
     // Constuctor
-    public Capture_picture(string new_sku_number)
+    public CapturePicture(string new_sku_number)
 	{
 		InitializeComponent();
         if (new_sku_number == "")

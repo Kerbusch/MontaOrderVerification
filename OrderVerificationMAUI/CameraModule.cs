@@ -20,7 +20,7 @@ namespace OrderVerificationMAUI
         public static void takePicture(string pictureFilePath)
         {
             Mat frame = new Mat();
-            VideoCapture capture = new VideoCapture();
+            VideoCapture capture = new VideoCapture(1);
 
             capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 1920);
             capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 1080);
