@@ -11,6 +11,7 @@ public partial class Capture_picture : ContentPage
     int picture = 0;
     int total_pictures = 5;
 
+    // Constuctor
     public Capture_picture(string new_sku_number)
 	{
 		InitializeComponent();
@@ -30,6 +31,7 @@ public partial class Capture_picture : ContentPage
         picture_counter.Text = (total_pictures - picture).ToString();
     }
 
+    // Returns the base path of the repo directory
     private string getPath()
     {
         string path = Path.GetDirectoryName(AppContext.BaseDirectory);
@@ -47,7 +49,8 @@ public partial class Capture_picture : ContentPage
         return path;
     }
 
-    private void ClickedNextPicture(object sender, EventArgs e)
+    // Makes the next picture and displays it on the screen
+    private void clickedNextPicture(object sender, EventArgs e)
     {
         if (total_pictures == picture) { return; }
 
@@ -59,7 +62,7 @@ public partial class Capture_picture : ContentPage
         last_path = path + picture_path + sku_number + "\\" + sku_number + " (" + (picture + 1).ToString() + ").jpg";
 
         CameraModule cameraModule = new CameraModule();
-        CameraModule.TakePicture(last_path);
+        CameraModule.takePicture(last_path);
 
         last_image.Source = last_path;
 
@@ -67,12 +70,13 @@ public partial class Capture_picture : ContentPage
         picture_counter.Text = (total_pictures - picture).ToString();
     }
 
-    private void ClickedDeleteLastPicture(object sender, EventArgs e)
+    // Replaces the last made picture with a new picture and displays the new picture on the screen 
+    private void clickedDeleteLastPicture(object sender, EventArgs e)
     {
         if (picture == 0) { return; }
 
         CameraModule cameraModule = new CameraModule();
-        CameraModule.TakePicture(last_path);
+        CameraModule.takePicture(last_path);
 
         last_image.Source = last_path;
     }

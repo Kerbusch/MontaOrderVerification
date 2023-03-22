@@ -11,8 +11,13 @@ namespace OrderVerificationMAUI
 {
     public class CameraModule
     {
-        public CameraModule() { }
-        public static void TakePicture(string pictureFilePath)
+        // Constructor
+        public CameraModule() 
+        { 
+        }
+
+        // Take picture and save it at the given path
+        public static void takePicture(string pictureFilePath)
         {
             Mat frame = new Mat();
             VideoCapture capture = new VideoCapture();

@@ -4,83 +4,91 @@ public partial class MainPage : ContentPage
 {
 	string sku_number;
 
+    // Constructor
 	public MainPage()
 	{
 		InitializeComponent();
 	}
 
-    /*private void Entry_TextChanged(object sender, TextChangedEventArgs e)
+    // Add 1 to the text box
+    private void clicked1(object sender, EventArgs e)
     {
-		if (SkuEntry.Text != "" && !input)
+        sku_entry.Text += "1";
+    }
+
+    // Add 2 to the text box
+    private void clicked2(object sender, EventArgs e)
+    {
+        sku_entry.Text += "2";
+    }
+
+    // Add 3 to the text box
+    private void clicked3(object sender, EventArgs e)
+    {
+        sku_entry.Text += "3";
+    }
+
+    // Add 4 to the text box
+    private void clicked4(object sender, EventArgs e)
+    {
+        sku_entry.Text += "4";
+    }
+
+    // Add 5 to the text box
+    private void clicked5(object sender, EventArgs e)
+    {
+        sku_entry.Text += "5";
+    }
+
+    // Add 6 to the text box
+    private void clicked6(object sender, EventArgs e)
+    {
+        sku_entry.Text += "6";
+    }
+
+    // Add 7 to the text box
+    private void clicked7(object sender, EventArgs e)
+    {
+        sku_entry.Text += "7";
+    }
+
+    // Add 8 to the text box
+    private void clicked8(object sender, EventArgs e)
+    {
+        sku_entry.Text += "8";
+    }
+
+    // Add 9 to the text box
+    private void clicked9(object sender, EventArgs e)
+    {
+        sku_entry.Text += "9";
+    }
+
+    // Add 0 to the text box
+    private void clicked0(object sender, EventArgs e)
+    {
+        sku_entry.Text += "0";
+    }
+
+    // Clear the text box
+    private void clickedDelete(object sender, EventArgs e)
+    {
+        sku_entry.Text = "";
+    }
+
+    // Delete the last char of the text box
+    private void clickedBack(object sender, EventArgs e)
+    {
+        if (sku_entry.Text != "")
         {
-			SkuEntry.Text = SkuEntry.Text.Replace("Sku invoeren", "");
-			input = true;
-        }
-		/*else if (SkuEntry.Text == "")
-		{
-			SkuEntry.Text = "Sku invoeren";
-			input = false;
-        }
-        SemanticScreenReader.Announce(SkuEntry.Text);
-    }*/
-
-    private void Clicked_1(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "1";
-    }
-    private void Clicked_2(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "2";
-    }
-    private void Clicked_3(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "3";
-    }
-    private void Clicked_4(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "4";
-    }
-    private void Clicked_5(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "5";
-    }
-    private void Clicked_6(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "6";
-    }
-    private void Clicked_7(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "7";
-    }
-    private void Clicked_8(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "8";
-    }
-    private void Clicked_9(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "9";
-    }
-    private void Clicked_0(object sender, EventArgs e)
-    {
-        SkuEntry.Text += "0";
-    }
-    private void Clicked_delete(object sender, EventArgs e)
-    {
-        SkuEntry.Text = "";
-    }
-    private void Clicked_back(object sender, EventArgs e)
-    {
-        if (SkuEntry.Text != "")
-        {
-            SkuEntry.Text = SkuEntry.Text.Remove(SkuEntry.Text.Length - 1);
+            sku_entry.Text = sku_entry.Text.Remove(sku_entry.Text.Length - 1);
         }
     }
 
-    private async void Clicked_enter(object sender, EventArgs e)
+    // Save the text box input and go to the next page 
+    private async void clickedEnter(object sender, EventArgs e)
     {
-        sku_number = SkuEntry.Text;
-
-        //switch to the photo showing page
+        sku_number = sku_entry.Text;
         await Navigation.PushAsync(new Capture_picture(sku_number));
     }
 }
