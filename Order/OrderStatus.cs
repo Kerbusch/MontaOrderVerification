@@ -2,7 +2,7 @@
 
 public class OrderStatus {
 	//check if the given order is complete based on the skus and the expected skus of the order
-	public static Order checkComplete(Order order) {
+	public static void checkComplete(ref Order order) {
 		//walk trough the expected_skus array and remove sku if it is present.
 		long[] expected_skus = order.expected_skus;
 		List<long> excess_skus = new List<long>();
@@ -24,23 +24,23 @@ public class OrderStatus {
 		if (expected_skus.Length == 0 && excess_skus.Count == 0) {
 			order.is_complete = true;
 			order.has_been_checked = true;
-			return order;
+			return;
 		}
 
 		//else return false and the order is not complete
 		order.is_complete = false;
 		order.has_been_checked = true;
-		return order;
+		return;
 	}
 
 	//run checkComplete() on all orders in the parameter list
-	public static Order[] checkComplete(Order[] orders) {
-		for (int i = 0; i < orders.Length; i++) {
-			orders[i] = checkComplete(orders[i]);
-		}
-
-		return orders;
-	}
+	// public static Order[] checkComplete(Order[] orders) {
+	// 	for (int i = 0; i < orders.Length; i++) {
+	// 		orders[i] = checkComplete(orders[i]);
+	// 	}
+	//
+	// 	return orders;
+	// }
 
 	//return a string feedback based on the bool in a order.
 	public static string getOrderStatus(Order order) {
