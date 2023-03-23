@@ -39,6 +39,7 @@ namespace OrderVerificationMAUI
                 CvInvoke.Imshow(win1, frame);
             }
             //The latest frame will be saved on the specified file path
+
             frame.Save(pictureFilePath);
             //Dispose the frame
             frame.Dispose();
