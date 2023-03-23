@@ -1,4 +1,5 @@
 using System.Numerics;
+using Emgu.CV;
 
 namespace OrderVerificationMAUI;
 
@@ -27,7 +28,6 @@ public partial class CapturePicture : ContentPage
         }
 
         path = getPath();
-        live_image.Source = path + "picture.jpg";
         picture_counter.Text = (total_pictures - picture).ToString();
     }
 
