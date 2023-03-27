@@ -1,35 +1,26 @@
 ﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using OrderLogic;
 
 namespace OrderLogger;
 
-public class CustomExceptionTest : Exception {
-    public CustomExceptionTest() {}
-
-    public CustomExceptionTest(string message) : base(message) {}
-
-    public CustomExceptionTest(string message, Exception innerException) : base(message, innerException) {} 
-}
-
 public class Logger {
 //private:
     private string _category = "Logger";
-    private string _start_text_file = "The logger started at: " + DateTime.Now + ":\n";
+    private string _start_text_file = "The logger started at: " + DateTime.Now + ":";
     private string _path;
 
-    private void handleErrorString(string message) {
+    private async Task handleErrorStringAsync(string message) {
         if (write_debug_console) {
             Debug.WriteLine(message, _category);
         }
         if (write_file) {
-            writeToFile(message);
+            writeToFileAsync(message);
         }
     }
 
-    private void writeToFile(string message) {
+    private async Task writeToFileAsync(string message) {
         message += "\n";
-        File.AppendAllText(_path, message);
+        await File.AppendAllTextAsync(_path, message);
     }
     
     
@@ -39,15 +30,18 @@ public class Logger {
 
     public Logger(string path) {
         _path = path;
-        writeToFile(_start_text_file);
+        
+        //write default string with date to log file
+        writeToFileAsync(_start_text_file);
     }
 
     public void logError(string message) {
-        handleErrorString(message);
+        // _ = handleErrorStringAsync(message);
+        _ = Task.Run(() => handleErrorStringAsync(message));
     }
 
     public void logError(Exception exception) {
-        handleErrorString(exception.ToString());
+        _ = handleErrorStringAsync(exception.ToString());
     }
 
     public void logNewOrder(Order order) {
@@ -64,7 +58,7 @@ public class Logger {
         message += "\tEXPECTED_SKUS = [" + string.Join(", ", order.expected_skus) + "]";
 
         //handle message
-        handleErrorString(message);
+        _ = handleErrorStringAsync(message);
     }
 
     public void logSkus(long[] skus) {
@@ -83,6 +77,6 @@ public class Logger {
         }
 
         //handle message
-        handleErrorString(message);
+        _ = handleErrorStringAsync(message);
     }
 }
