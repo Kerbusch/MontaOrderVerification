@@ -1,6 +1,3 @@
-using System.Numerics;
-using Emgu.CV;
-
 namespace OrderVerificationMAUI;
 
 public partial class CapturePicture : ContentPage
@@ -10,7 +7,7 @@ public partial class CapturePicture : ContentPage
     string picture_path = "Trainedmodel\\DatasetOOT\\Training\\";
     string last_path = "";
     int picture = 0;
-    int total_pictures = 5;
+    int total_pictures = 30;
 
     // Constuctor
     public CapturePicture(string new_sku_number)
@@ -29,6 +26,15 @@ public partial class CapturePicture : ContentPage
 
         path = getPath();
         picture_counter.Text = (total_pictures - picture).ToString();
+
+        if (Directory.Exists(path + picture_path + sku_number))
+        {
+            return;
+        }
+        else
+        {
+            Directory.CreateDirectory(path + picture_path + sku_number);
+        }
     }
 
     // Returns the base path of the repo directory
@@ -49,15 +55,16 @@ public partial class CapturePicture : ContentPage
         return path;
     }
 
+    // Checks what the highes nummer 
+    private void previousNumbers()
+    {
+
+    }
+
     // Makes the next picture and displays it on the screen
     private void clickedNextPicture(object sender, EventArgs e)
     {
         if (total_pictures == picture) { return; }
-
-        if (!Directory.Exists(path + picture_path + sku_number))
-        {
-            Directory.CreateDirectory(path + picture_path + sku_number);
-        }
 
         last_path = path + picture_path + sku_number + "\\" + sku_number + " (" + (picture + 1).ToString() + ").jpg";
 
