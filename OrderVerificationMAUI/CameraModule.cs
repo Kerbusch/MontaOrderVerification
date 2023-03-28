@@ -1,4 +1,7 @@
 ﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Platform;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -49,7 +52,24 @@ namespace OrderVerificationMAUI
             CvInvoke.DestroyWindow(liveStreamWindow);
         }
 
-        public static void getContours(string pictureFilePath) { }
+        public static void getContours(/*string pictureFilePath*/) 
+        {
+            //load image
+            string pictureFilePath = "C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/live_feed.jpg";
+            Image<Gray, Byte> img1 = new Image<Gray, Byte>(pictureFilePath);
+            String liveStreamWindow = "Photo Window (Press any key to take a picture)";
+            //Create a window using the specified name
+            CvInvoke.NamedWindow(liveStreamWindow, Emgu.CV.CvEnum.WindowFlags.Normal);
+            //set window to fullscreen
+            CvInvoke.SetWindowProperty(liveStreamWindow, Emgu.CV.CvEnum.WindowPropertyFlags.FullScreen, 0);
+
+            CvInvoke.Imshow(liveStreamWindow, img1);
+            
+
+            //extract contours
+            //show contours of product with imshow window
+            //
+        }
     }
 }
 
