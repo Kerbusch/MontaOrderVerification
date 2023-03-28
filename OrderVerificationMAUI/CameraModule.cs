@@ -17,11 +17,11 @@ namespace OrderVerificationMAUI
         // Take picture and save it at the given path
         public static void takePicture(string pictureFilePath)
         {
-            String win1 = "Photo Window (Press any key to take a picture)";
+            String liveStreamWindow = "Photo Window (Press any key to take a picture)";
             //Create a window using the specified name
-            CvInvoke.NamedWindow(win1, Emgu.CV.CvEnum.WindowFlags.Normal);
+            CvInvoke.NamedWindow(liveStreamWindow, Emgu.CV.CvEnum.WindowFlags.Normal);
             //set window to fullscreen
-            CvInvoke.SetWindowProperty(win1, Emgu.CV.CvEnum.WindowPropertyFlags.FullScreen, 1);
+            CvInvoke.SetWindowProperty(liveStreamWindow, Emgu.CV.CvEnum.WindowPropertyFlags.FullScreen, 1);
             //Frame
             Mat frame = new Mat();
             //Videocapture
@@ -39,13 +39,14 @@ namespace OrderVerificationMAUI
             while (CvInvoke.WaitKey(1) == -1)
             {
                 capture.Read(frame);
-                CvInvoke.Imshow(win1, frame);
+                CvInvoke.Imshow(liveStreamWindow, frame);
             }
 
             frame.Save(pictureFilePath);
 
             frame.Dispose();
             capture.Dispose();
+            CvInvoke.DestroyWindow(liveStreamWindow);
         }
 
         public static void getContours(string pictureFilePath) { }
