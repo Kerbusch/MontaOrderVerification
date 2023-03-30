@@ -1,11 +1,4 @@
 ﻿using Emgu.CV;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace OrderVerificationMAUI
 {
@@ -19,18 +12,25 @@ namespace OrderVerificationMAUI
         // Take picture and save it at the given path
         public static void takePicture(string pictureFilePath)
         {
-            Mat frame = new Mat();
-            VideoCapture capture = new VideoCapture(1);
+            String win1 = "Photo Window (Press any key to take a picture)";
+            CvInvoke.NamedWindow(win1, Emgu.CV.CvEnum.WindowFlags.Normal);
+            CvInvoke.SetWindowProperty(win1, Emgu.CV.CvEnum.WindowPropertyFlags.FullScreen, 1);
 
-            capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 1920);
-            capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 1080);
-            
-            capture.Read(frame);
+            Mat frame = new Mat();
+            VideoCapture capture = new VideoCapture();
+
+            while (CvInvoke.WaitKey(1) == -1)
+            {
+                capture.Read(frame);
+                CvInvoke.Imshow(win1, frame);
+            }
 
             frame.Save(pictureFilePath);
 
             frame.Dispose();
             capture.Dispose();
+
+            CvInvoke.DestroyWindow(win1);
         }
     }
 }
