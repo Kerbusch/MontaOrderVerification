@@ -90,7 +90,7 @@ public partial class MainPage : ContentPage
     {
         /*sku_number = sku_entry.Text;
         await Navigation.PushAsync(new CapturePicture(sku_number));*/
-        CameraModule.getContours();
+        CameraModule.makeBackgroundTransparent();
     }
 }
 
