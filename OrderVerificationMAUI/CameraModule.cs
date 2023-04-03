@@ -108,6 +108,72 @@ namespace OrderVerificationMAUI
            
 
         }
+
+
+        public static void test()
+        {
+
+            string pictureFilePath = "C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/test.jpg";
+
+            String liveStreamWindow = "Test Window (Press any key to take a picture)";
+
+            
+            OpenCvSharp.Cv2.NamedWindow(liveStreamWindow, WindowFlags.Normal);
+
+            OpenCvSharp.Size size = new OpenCvSharp.Size(640, 480);
+            Cv2.ResizeWindow(liveStreamWindow, size);
+            Cv2.MoveWindow(liveStreamWindow, 250, 220);
+
+            OpenCvSharp.Mat mat = new OpenCvSharp.Mat();
+            OpenCvSharp.VideoCapture videoCapture = new OpenCvSharp.VideoCapture(0);
+            
+            
+
+            while (Cv2.WaitKey(1) == -1) 
+            {
+                videoCapture.Read(mat);
+                Cv2.ImShow(liveStreamWindow, mat);
+            }
+
+            mat.SaveImage(pictureFilePath);
+            mat.Dispose();
+            videoCapture.Dispose();
+            Cv2.DestroyAllWindows();
+
+            /*String liveStreamWindow = "Photo Window (Press any key to take a picture)";
+            //Create a window using the specified name
+            CvInvoke.NamedWindow(liveStreamWindow, Emgu.CV.CvEnum.WindowFlags.Normal);
+            //set window to fullscreen
+            CvInvoke.SetWindowProperty(liveStreamWindow, Emgu.CV.CvEnum.WindowPropertyFlags.FullScreen, 1);
+            //Frame
+            Emgu.CV.Mat frame = new Emgu.CV.Mat();
+            //Videocapture
+            Emgu.CV.VideoCapture capture = new Emgu.CV.VideoCapture();
+
+            //capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 1920);
+            //capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 1080);
+
+            capture.Read(frame);
+            //Set camera capture width
+            //capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 1920);
+            //Set camera capture height
+            //capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 1080);
+            //loop for live view of camera. When a key is pressed loop will stop
+            while (CvInvoke.WaitKey(1) == -1)
+            {
+                capture.Read(frame);
+                CvInvoke.Imshow(liveStreamWindow, frame);
+            }
+
+            frame.Save(pictureFilePath);
+
+            frame.Dispose();
+            capture.Dispose();
+            CvInvoke.DestroyWindow(liveStreamWindow);*/
+
+        }
+
+
     }
 }
 
