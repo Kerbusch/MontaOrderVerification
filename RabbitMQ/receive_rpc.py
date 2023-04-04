@@ -49,7 +49,7 @@ class RabbitMQReceiver:
         ch.basic_publish(exchange='',
                          routing_key=properties.reply_to,
                          properties=pika.BasicProperties(
-                             correlation_id= properties.correlation_id,
+                             correlation_id=properties.correlation_id,
                              content_type="application/json"
                          ),
                          body=y)
@@ -68,7 +68,11 @@ class RabbitMQReceiver:
 
     # start consuming from the queue. This function is blocking!
     def run(self):
+        print("started consuming")
         self.channel.start_consuming()
+
+    def __del__(self):
+        self.connection.close()
 
 
 # debug function that will be replaced by the sku recognition AI.
@@ -92,6 +96,6 @@ def get_skus_from_image(image: np.ndarray) -> list[int]:
 
 # class test function
 if __name__ == '__main__':
-    # x = RabbitMQReceiver("localhost", "rpc_queue", get_skus_from_image)
-    receiver = RabbitMQReceiver("192.168.178.33", "python_test_user", "jedis", "rpc_queue", get_skus_from_image)
+    receiver = RabbitMQReceiver("localhost", "python_test_user", "jedis", "rpc_queue", get_skus_from_image)
+    # receiver = RabbitMQReceiver("192.168.178.33", "python_test_user", "jedis", "rpc_queue", get_skus_from_image)
     receiver.run()
