@@ -59,15 +59,8 @@ namespace OrderVerificationMAUI
             CvInvoke.DestroyWindow(liveStreamWindow);
         }
 
-        public static void makeBackgroundTransparent() {
-
-            //todo:
-            //gausion filter voor mask. - de huidige image. 
-
-
-            //load image
-            string pictureFilePath = "C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/Oot.jpg";
-            
+        public static void makeBackgroundTransparent(string pictureFilePath) {
+                   
 
             // load as color image BGR
             OpenCvSharp.Mat input = OpenCvSharp.Cv2.ImRead(pictureFilePath);
@@ -99,7 +92,7 @@ namespace OrderVerificationMAUI
                     }
                 }
             }
-            OpenCvSharp.Cv2.ImWrite("C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/transparent.png", input_bgra);
+            OpenCvSharp.Cv2.ImWrite(pictureFilePath, input_bgra);
         }
 
 

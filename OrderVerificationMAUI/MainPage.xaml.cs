@@ -88,9 +88,8 @@ public partial class MainPage : ContentPage
     // Save the text box input and go to the next page 
     private async void clickedEnter(object sender, EventArgs e)
     {
-        /*sku_number = sku_entry.Text;
-        await Navigation.PushAsync(new CapturePicture(sku_number));*/
-        CameraModule.makeBackgroundTransparent();
+        sku_number = sku_entry.Text;
+        await Navigation.PushAsync(new CapturePicture(sku_number));
     }
 }
 
