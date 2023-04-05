@@ -1,7 +1,7 @@
 <annotation>
 	<folder>8719992763139</folder>
-	<filename>8719992763139 (1).jpg</filename>
-	<path>C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\Trainedmodel\DatasetOOT\Training\8719992763139\8719992763139 (1).jpg</path>
+	<filename>8719992763139 (49).jpg</filename>
+	<path>C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\Trainedmodel\DatasetOOT\Training\8719992763139\8719992763139 (49).jpg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,10 +17,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>258</xmin>
-			<ymin>51</ymin>
-			<xmax>414</xmax>
-			<ymax>457</ymax>
+			<xmin>45</xmin>
+			<ymin>240</ymin>
+			<xmax>596</xmax>
+			<ymax>449</ymax>
 		</bndbox>
 	</object>
 </annotation>
