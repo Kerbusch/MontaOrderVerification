@@ -86,9 +86,8 @@ public class RpcClient: IDisposable {
 		byte[] image_data = image_bgr.ToJpegData();
 		
 		//create task completion source
-		var task_completion_source = new TaskCompletionSource<List<long>>();
-		var tcs = TaskCreationOptions.RunContinuationsAsynchronously;
-		
+		var task_completion_source = new TaskCompletionSource<List<long>>(TaskCreationOptions.RunContinuationsAsynchronously);
+
 		//add tcs to callback mapper
 		_callback_mapper.TryAdd(correlation_id, task_completion_source);
 		
@@ -105,6 +104,9 @@ public class RpcClient: IDisposable {
 	}
 
 	public void Dispose() {
-		_connection.Close(); //this function hangs the application
+		_connection.Close();
+		// To make the close function not hang the TaskCompletionSource is created with:
+		// TaskCreationOptions.RunContinuationsAsynchronously
+		// This is a workaround but should be fine
 	}
 }
