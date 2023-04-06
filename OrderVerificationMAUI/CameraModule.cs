@@ -66,13 +66,23 @@ namespace OrderVerificationMAUI
 
 
             //load image
-            string pictureFilePath = "C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/Oot.jpg";
+            string pictureFilePath = "C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/oot2.jpg";
             
 
             // load as color image BGR
-            OpenCvSharp.Mat input = OpenCvSharp.Cv2.ImRead(pictureFilePath);
+            OpenCvSharp.Mat original = OpenCvSharp.Cv2.ImRead(pictureFilePath);
 
-            
+            //gaussian blur
+            OpenCvSharp.Mat input = new();
+            OpenCvSharp.Size s = new OpenCvSharp.Size(3,3);
+            OpenCvSharp.Cv2.GaussianBlur(original, input, s, 0);
+
+            String Window = "Photo Window (Press any key to take a picture)";
+            //Create a window using the specified name
+            CvInvoke.NamedWindow(Window, Emgu.CV.CvEnum.WindowFlags.Normal);
+            Cv2.ImShow(Window, input);
+
+
             OpenCvSharp.Mat input_bgra = new();
             OpenCvSharp.Cv2.CvtColor(input, input_bgra, ColorConversionCodes.BGR2BGRA);
             
@@ -103,9 +113,23 @@ namespace OrderVerificationMAUI
         }
 
 
-        public static void getContours(/*string pictureFilePath*/) 
+        public static void getContours(string pictureFilePath) 
         {
-           
+            OpenCvSharp.Mat input = OpenCvSharp.Cv2.ImRead(pictureFilePath, OpenCvSharp.ImreadModes.Grayscale);
+            
+
+            OpenCvSharp.Point[][] contours; //vector<vector<Point>> contours;
+            HierarchyIndex[] hierarchyIndexes; //vector<Vec4i> hierarchy;
+
+            Cv2.FindContours(input, out contours, out hierarchyIndexes, RetrievalModes.CComp, ContourApproximationModes.ApproxSimple);
+            Cv2.DrawContours(input, contours, 0, Scalar.White,2);
+
+
+
+            String liveStreamWindow = "Photo Window (Press any key to take a picture)";
+            //Create a window using the specified name
+            CvInvoke.NamedWindow(liveStreamWindow, Emgu.CV.CvEnum.WindowFlags.Normal);
+            Cv2.ImShow(liveStreamWindow, input);
 
         }
 
@@ -118,11 +142,12 @@ namespace OrderVerificationMAUI
             String liveStreamWindow = "Test Window (Press any key to take a picture)";
 
             
-            OpenCvSharp.Cv2.NamedWindow(liveStreamWindow, WindowFlags.Normal);
+            OpenCvSharp.Cv2.NamedWindow(liveStreamWindow, WindowFlags.AutoSize);
 
             OpenCvSharp.Size size = new OpenCvSharp.Size(640, 480);
             Cv2.ResizeWindow(liveStreamWindow, size);
             Cv2.MoveWindow(liveStreamWindow, 250, 220);
+            Cv2.SetWindowProperty(liveStreamWindow, WindowPropertyFlags.Topmost, 1);
 
             OpenCvSharp.Mat mat = new OpenCvSharp.Mat();
             OpenCvSharp.VideoCapture videoCapture = new OpenCvSharp.VideoCapture(0);
