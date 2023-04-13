@@ -66,7 +66,7 @@ namespace OrderVerificationMAUI
 
 
             //load image
-            string pictureFilePath = "C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/oot2.jpg";
+            string pictureFilePath = "C:/Users/jojoo/Source/Repos/Kerbusch/MontaOrderVerification/OrderVerificationMAUI/oot3.jpg";
             
 
             // load as color image BGR
