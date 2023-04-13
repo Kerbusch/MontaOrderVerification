@@ -9,7 +9,7 @@ namespace RabbitMQRpcClient {
 	
 }
 
-public class RpcClient: IDisposable {
+public class RpcClientSKUFromImage: IDisposable {
 	//private
 	private const string _queue_name = "rpc_queue";
 
@@ -22,7 +22,7 @@ public class RpcClient: IDisposable {
 	//public
 	
 	//constructor
-	public RpcClient(string hostname, string username, string password) {
+	public RpcClientSKUFromImage(string hostname, string username, string password) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
 			UserName = username,
@@ -108,5 +108,52 @@ public class RpcClient: IDisposable {
 		// To make the close function not hang the TaskCompletionSource is created with:
 		// TaskCreationOptions.RunContinuationsAsynchronously
 		// This is a workaround but should be fine
+	}
+}
+
+
+public class RpcClientDataSetImageToServer {
+	private const string _queue_name = "dataset_images";
+
+	private readonly IConnection _connection;
+	private readonly IModel _channel;
+
+
+	public RpcClientDataSetImageToServer(string hostname, string username, string password) {
+		var factory = new ConnectionFactory {
+			HostName = hostname,
+			UserName = username,
+			Password = password
+		};
+		
+		//create connection and channel
+		_connection = factory.CreateConnection(); //todo: add try expect
+		_channel = _connection.CreateModel();
+
+		//declare queue on channel
+		_channel.QueueDeclare(
+			queue: _queue_name,
+			durable: true
+		);
+	}
+
+	public void sendToDataSetImageToServer(Mat image) {
+		//create basis properties
+		IBasicProperties properties = _channel.CreateBasicProperties();
+		
+		//set properties
+		properties.Persistent = true;
+		
+		//convert image to byte-array
+		var image_bgr = image.ToImage<Bgr, Byte>();
+		byte[] image_data = image_bgr.ToJpegData();
+		
+		//publish request to queue
+		_channel.BasicPublish(
+			exchange: string.Empty,
+			routingKey: _queue_name,
+			basicProperties: properties,
+			body: image_data
+		);
 	}
 }
