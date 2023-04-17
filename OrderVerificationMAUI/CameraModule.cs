@@ -46,6 +46,7 @@ namespace OrderVerificationMAUI
 
             frame.Dispose();
             capture.Dispose();
+            
             CvInvoke.DestroyWindow(liveStreamWindow);
         }
 
@@ -137,6 +138,7 @@ namespace OrderVerificationMAUI
             frame.Dispose();
             capture.Dispose();
             CvInvoke.DestroyWindow(liveStreamWindow);*/
+
 
         }
     }
