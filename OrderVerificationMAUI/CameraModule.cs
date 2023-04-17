@@ -46,13 +46,12 @@ namespace OrderVerificationMAUI
 
             frame.Dispose();
             capture.Dispose();
+            
             CvInvoke.DestroyWindow(liveStreamWindow);
         }
 
         // makes all the pixels around the object transparent
-        public static void makeBackgroundTransparent(string pictureFilePath) {
-            OpenCvSharp.Mat original = OpenCvSharp.Cv2.ImRead(pictureFilePath);
-
+        public static OpenCvSharp.Mat makeBackgroundTransparent(OpenCvSharp.Mat original) {
             OpenCvSharp.Mat input = new();
             OpenCvSharp.Size s = new OpenCvSharp.Size(3, 3);
             OpenCvSharp.Cv2.GaussianBlur(original, input, s, 0);
@@ -76,7 +75,8 @@ namespace OrderVerificationMAUI
                     }
                 }
             }
-            OpenCvSharp.Cv2.ImWrite(pictureFilePath, input_bgra);
+
+            return input_bgra;
         }
 
         // todo???
@@ -137,6 +137,7 @@ namespace OrderVerificationMAUI
             frame.Dispose();
             capture.Dispose();
             CvInvoke.DestroyWindow(liveStreamWindow);*/
+
 
         }
     }

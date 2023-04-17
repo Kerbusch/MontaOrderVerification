@@ -21,7 +21,6 @@ namespace OrderVerificationMAUI
         {
             foreach (List<string> file in files)
             {
-                CameraModule.makeBackgroundTransparent(file[1]);
                 createLabel(file, sku_nummer);
             }
         }
@@ -29,11 +28,11 @@ namespace OrderVerificationMAUI
         // creates a label for the given image
         public static void createLabel (List<string> file, string sku_nummer)
         {
-            if (File.Exists(file[1].Replace("png", "xml")))
+            if (File.Exists(file[1].Replace("jpg", "xml")))
             {
-                OpenCvSharp.Mat image = OpenCvSharp.Cv2.ImRead(file[1]);
+                OpenCvSharp.Mat image = CameraModule.makeBackgroundTransparent(OpenCvSharp.Cv2.ImRead(file[1]));
                 int[][] max_min = getMaxMin(image);
-                using (XmlWriter writer = XmlWriter.Create(file[1].Replace("png", "xml")))
+                using (XmlWriter writer = XmlWriter.Create(file[1].Replace("jpg", "xml")))
                 {
                     writer.WriteStartDocument();    
                     writer.WriteStartElement("annotation");
