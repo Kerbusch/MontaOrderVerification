@@ -105,7 +105,7 @@ public partial class CapturePicture : ContentPage
     }
 
     // Replaces the last made picture with a new picture and displays the new picture on the screen 
-    private void clickedDeleteLastPicture(object sender, EventArgs e)
+    private void clickedRetakeLastPicture(object sender, EventArgs e)
     {
         if (picture == 0) { return; }
 
