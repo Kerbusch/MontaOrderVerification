@@ -108,6 +108,7 @@
             </Grid>
 
             <Button
+                x:Name="button_next_picture"
                 Grid.Row="3"
                 Grid.Column="1"
                 Text="Take next picture"

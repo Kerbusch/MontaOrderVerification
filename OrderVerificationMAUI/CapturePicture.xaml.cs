@@ -9,7 +9,8 @@ public partial class CapturePicture : ContentPage
     string picture_path = "Trainedmodel\\DatasetOOT\\Training\\";
     string last_path = "";
     int picture = 0;
-    int total_pictures = 5;
+    int total_pictures = 1;
+    List<List<string>> all_paths = new List<List<string>>();
 
     // Constuctor
     public CapturePicture(string new_sku_number)
@@ -29,6 +30,16 @@ public partial class CapturePicture : ContentPage
         path = getPath();
         live_image.Source = path + "picture.jpg";
         picture_counter.Text = (total_pictures - picture).ToString();
+
+        string[] all_files = Directory.GetFiles(path + picture_path + sku_number + "\\", "*.jpg");
+
+        foreach (string file in all_files)
+        {
+            List<string> tmp = new List<string>() { sku_number, file };
+            all_paths.Add(tmp);
+        }
+        AutoLabeler.labelPictures(all_paths, sku_number);
+
     }
 
     // Returns the base path of the repo directory
@@ -52,7 +63,15 @@ public partial class CapturePicture : ContentPage
     // Makes the next picture and displays it on the screen
     private void clickedNextPicture(object sender, EventArgs e)
     {
-        if (total_pictures == picture) { return; }
+        if (total_pictures == picture) {
+            if (button_next_picture.Text == "Take next picture") {
+                button_next_picture.Text = "Finish sku";
+            }
+            else {
+                AutoLabeler.labelPictures(all_paths, sku_number);
+            }
+            
+        }
 
         if (!Directory.Exists(path + picture_path + sku_number))
         {

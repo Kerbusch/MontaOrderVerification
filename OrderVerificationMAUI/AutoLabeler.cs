@@ -17,9 +17,9 @@ namespace OrderVerificationMAUI
         public AutoLabeler() { }
 
         // Loop through all the images and labels them
-        public static void labelPictures(string[][] files, string sku_nummer)
+        public static void labelPictures(List<List<string>> files, string sku_nummer)
         {
-            foreach (string[] file in files)
+            foreach (List<string> file in files)
             {
                 CameraModule.makeBackgroundTransparent(file[1]);
                 createLabel(file, sku_nummer);
@@ -27,12 +27,12 @@ namespace OrderVerificationMAUI
         }
 
         // creates a label for the given image
-        public static void createLabel (string[] file, string sku_nummer)
+        public static void createLabel (List<string> file, string sku_nummer)
         {
             if (File.Exists(file[1].Replace("png", "xml")))
             {
                 OpenCvSharp.Mat image = OpenCvSharp.Cv2.ImRead(file[1]);
-                int[] max_min = getMaxMin(image);
+                int[][] max_min = getMaxMin(image);
                 using (XmlWriter writer = XmlWriter.Create(file[1].Replace("png", "xml")))
                 {
                     writer.WriteStartDocument();    
@@ -55,10 +55,10 @@ namespace OrderVerificationMAUI
                             writer.WriteElementString("truncated", "0");
                             writer.WriteElementString("difficult", "0");
                             writer.WriteStartElement("bndbox");
-                                writer.WriteElementString("xmin", $"{max_min[0]}");
-                                writer.WriteElementString("ymin", $"{max_min[1]}");
-                                writer.WriteElementString("xmax", $"{max_min[2]}");
-                                writer.WriteElementString("ymax", $"{max_min[3]}");
+                                writer.WriteElementString("xmin", $"{max_min[0][1]}");
+                                writer.WriteElementString("ymin", $"{max_min[1][1]}");
+                                writer.WriteElementString("xmax", $"{max_min[0][0]}");
+                                writer.WriteElementString("ymax", $"{max_min[1][0]}");
                             writer.WriteEndElement();
                         writer.WriteEndElement();
                     writer.WriteEndElement();
@@ -69,9 +69,11 @@ namespace OrderVerificationMAUI
         }
 
         // Gets the max and min values of the non black pixels
-        public static int[] getMaxMin(OpenCvSharp.Mat image)
+        public static int[][] getMaxMin(OpenCvSharp.Mat image)
         {
-            int[] rtn = { 0, 0, image.Width, image.Height }; // maxX, maxY, minX, minY
+            int[] x_values = { 0, image.Width }; // maxX, minX
+            int[] y_values = { 0, image.Height }; // maxY, minY
+            int[][] rtn = { x_values, y_values };
 
             for (int y = 0; y < image.Rows; ++y)
             {
@@ -80,24 +82,24 @@ namespace OrderVerificationMAUI
                     Vec4b pixel = image.At<Vec4b>(y, x);
                     if (pixel[0] < 255 && pixel[1] < 255 && pixel[2] < 255)
                     {
-                        if (x > rtn[0]) // maxX
+                        if (x > rtn[0][0]) // maxX
                         {
-                            rtn[0] = x;
+                            rtn[0][0] = x;
                         }
 
-                        if (y > rtn[1]) // maxY
+                        if (x < rtn[0][1]) // minx
                         {
-                            rtn[1] = y;
+                            rtn[0][1] = x;
                         }
 
-                        if (x < rtn[2]) // minx
+                        if (y > rtn[1][0]) // maxY
                         {
-                            rtn[2] = x;
+                            rtn[1][0] = y;
                         }
 
-                        if (y < rtn[3]) // minY
+                        if (y < rtn[1][1]) // minY
                         {
-                            rtn[3] = y;
+                            rtn[1][1] = y;
                         }
                     }
                 }
