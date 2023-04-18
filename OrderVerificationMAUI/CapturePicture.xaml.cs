@@ -9,7 +9,7 @@ public partial class CapturePicture : ContentPage
     string picture_path = "Trainedmodel\\DatasetOOT\\Training\\";
     string last_path = "";
     int picture = 0;
-    int total_pictures = 30;
+    int total_pictures = 1;
     int last_number;
 
     // Constuctor
@@ -28,7 +28,7 @@ public partial class CapturePicture : ContentPage
 
         path = getPath();
         picture_counter.Text = (total_pictures - picture).ToString();
-
+    
         if (Directory.Exists(path + picture_path + sku_number))
         {
             last_number = previousNumbers();
@@ -66,31 +66,36 @@ public partial class CapturePicture : ContentPage
 
         foreach (string fileName in all_files)
         {
-            Debug.WriteLine(fileName);
-        }
-
-        foreach (string fileName in all_files)
-        {
-            Debug.WriteLine(fileName);
             string tmp = fileName.Replace(path + picture_path + sku_number + "\\" + sku_number + " (", "");
             tmp = tmp.Replace(").jpg", "");
-            Debug.WriteLine(tmp);
             int i = int.Parse(tmp);
             numbers.Add(i);
         }
 
-        foreach (int i in numbers) 
+        if (numbers.Count > 0)
         {
-            Debug.WriteLine(i);
+            return numbers.Max();
         }
-
-        return numbers.Max();
+        return 0;
     }
 
     // Makes the next picture and displays it on the screen
-    private void clickedNextPicture(object sender, EventArgs e)
+    private async void clickedNextPicture(object sender, EventArgs e)
     {
-        if (total_pictures == picture) { return; }
+        if (last_path != "") { 
+            List<string> tmp = new List<string>() { (sku_number + " (" + (picture + last_number).ToString() + ").jpg"), last_path };
+            AutoLabeler.createLabel(tmp, sku_number);
+        }
+
+        if (total_pictures >= -picture) {
+            if (button_next_picture.Text == "Take next picture") {
+                button_next_picture.Text = "Next sku";
+            }
+            else {
+                await Navigation.PushAsync(new MainPage());
+                return;
+            }
+        }
 
         last_path = path + picture_path + sku_number + "\\" + sku_number + " (" + (picture + last_number + 1).ToString() + ").jpg";
 
@@ -105,7 +110,7 @@ public partial class CapturePicture : ContentPage
     }
 
     // Replaces the last made picture with a new picture and displays the new picture on the screen 
-    private void clickedDeleteLastPicture(object sender, EventArgs e)
+    private void clickedRetakeLastPicture(object sender, EventArgs e)
     {
         if (picture == 0) { return; }
 

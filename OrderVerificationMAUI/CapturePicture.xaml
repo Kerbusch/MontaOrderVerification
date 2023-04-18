@@ -94,6 +94,7 @@
             </Grid>
 
             <Button
+                x:Name="button_next_picture"
                 Grid.Row="3"
                 Grid.Column="1"
                 Text="Take next picture"
@@ -109,7 +110,7 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Text="Retake last picture"
-                Clicked="clickedDeleteLastPicture"
+                Clicked="clickedRetakeLastPicture"
                 FontSize="Large"
                 CornerRadius="10"
                 BorderWidth="3"
