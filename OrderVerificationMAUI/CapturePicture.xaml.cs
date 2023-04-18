@@ -9,9 +9,8 @@ public partial class CapturePicture : ContentPage
     string picture_path = "Trainedmodel\\DatasetOOT\\Training\\";
     string last_path = "";
     int picture = 0;
-    int total_pictures = 30;
+    int total_pictures = 1;
     int last_number;
-    List<List<string>> all_paths = new List<List<string>>();
 
     // Constuctor
     public CapturePicture(string new_sku_number)
@@ -40,15 +39,6 @@ public partial class CapturePicture : ContentPage
             Directory.CreateDirectory(path + picture_path + sku_number);
             Sku_label.Text = sku_number + " (1) ";
         }
-
-        string[] all_files = Directory.GetFiles(path + picture_path + sku_number + "\\", "*.jpg");
-
-        foreach (string file in all_files)
-        {
-            List<string> tmp = new List<string>() { sku_number, file };
-            all_paths.Add(tmp);
-        }
-        AutoLabeler.labelPictures(all_paths, sku_number);
     }
 
     // Returns the base path of the repo directory
@@ -82,20 +72,29 @@ public partial class CapturePicture : ContentPage
             numbers.Add(i);
         }
 
-        return numbers.Max();
+        if (numbers.Count > 0)
+        {
+            return numbers.Max();
+        }
+        return 0;
     }
 
     // Makes the next picture and displays it on the screen
-    private void clickedNextPicture(object sender, EventArgs e)
+    private async void clickedNextPicture(object sender, EventArgs e)
     {
-        if (total_pictures == picture) {
+        if (last_path != "") { 
+            List<string> tmp = new List<string>() { (sku_number + " (" + (picture + last_number).ToString() + ").jpg"), last_path };
+            AutoLabeler.createLabel(tmp, sku_number);
+        }
+
+        if (total_pictures >= -picture) {
             if (button_next_picture.Text == "Take next picture") {
-                button_next_picture.Text = "Finish sku";
+                button_next_picture.Text = "Next sku";
             }
             else {
-                AutoLabeler.labelPictures(all_paths, sku_number);
+                await Navigation.PushAsync(new MainPage());
+                return;
             }
-            
         }
 
         last_path = path + picture_path + sku_number + "\\" + sku_number + " (" + (picture + last_number + 1).ToString() + ").jpg";
