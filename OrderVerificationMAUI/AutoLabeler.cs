@@ -28,8 +28,9 @@ namespace OrderVerificationMAUI
         // creates a label for the given image
         public static void createLabel (List<string> file, string sku_nummer)
         {
-            if (File.Exists(file[1].Replace("jpg", "xml")))
+            if (!File.Exists(file[1].Replace("jpg", "xml")))
             {
+                Debug.WriteLine(file[1]);
                 OpenCvSharp.Mat image = CameraModule.makeBackgroundTransparent(OpenCvSharp.Cv2.ImRead(file[1]));
                 int[][] max_min = getMaxMin(image);
                 using (XmlWriter writer = XmlWriter.Create(file[1].Replace("jpg", "xml")))
@@ -78,8 +79,7 @@ namespace OrderVerificationMAUI
             {
                 for (int x = 0; x < image.Cols; ++x)
                 {
-                    Vec4b pixel = image.At<Vec4b>(y, x);
-                    if (pixel[0] < 255 && pixel[1] < 255 && pixel[2] < 255)
+                    if (image.At<Vec4b>(y, x)[3] != 0)
                     {
                         if (x > rtn[0][0]) // maxX
                         {

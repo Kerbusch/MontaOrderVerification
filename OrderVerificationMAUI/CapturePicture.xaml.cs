@@ -76,22 +76,10 @@ public partial class CapturePicture : ContentPage
 
         foreach (string fileName in all_files)
         {
-            Debug.WriteLine(fileName);
-        }
-
-        foreach (string fileName in all_files)
-        {
-            Debug.WriteLine(fileName);
             string tmp = fileName.Replace(path + picture_path + sku_number + "\\" + sku_number + " (", "");
             tmp = tmp.Replace(").jpg", "");
-            Debug.WriteLine(tmp);
             int i = int.Parse(tmp);
             numbers.Add(i);
-        }
-
-        foreach (int i in numbers) 
-        {
-            Debug.WriteLine(i);
         }
 
         return numbers.Max();
