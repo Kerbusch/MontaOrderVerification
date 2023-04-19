@@ -1,23 +1,26 @@
-﻿using System.Collections.Concurrent;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace rabbitmqTestRecive; 
 
+//Class for receiving the sku number and vendor from the queue and returning the index
 public class SkuIndexReceiver {
+	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
+	//In a future version this this should be in a configuration or definition file.
 	private const string _queue_name = "sku_number";
 	
 	private readonly IConnection _connection;
 	private readonly IModel _channel;
 	private EventingBasicConsumer _consumer;
 	
+	//Struct for json deserializing
 	private struct ReceiveStruct {
 		public long sku { get; set; }
 		public string vendor { get; set; }
 	}
 
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
 	public SkuIndexReceiver(string hostname, string username, string password) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
@@ -49,7 +52,7 @@ public class SkuIndexReceiver {
 			handleMessage(model, ea);
 		};
 		
-		// add consumer
+		//add consumer
 		_channel.BasicConsume(
 			consumer: _consumer,
 			queue: _queue_name,
@@ -57,6 +60,7 @@ public class SkuIndexReceiver {
 		);
 	}
 
+	// Handler for the incoming messages. After the processing it publishes a message to the return queue
 	private void handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
 		int response = 0;
 

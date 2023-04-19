@@ -21,7 +21,7 @@ public class SkuFromImageRpc: IDisposable {
 	private readonly ConcurrentDictionary<string, TaskCompletionSource<List<long>>> _callback_mapper = new();
 	private EventingBasicConsumer _consumer;
 
-	//Constructor that creates the connection to the RabbitMQ server
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
 	public SkuFromImageRpc(string hostname, string username, string password) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
@@ -29,7 +29,7 @@ public class SkuFromImageRpc: IDisposable {
 			Password = password
 		};
 
-		//create connection and channel
+		//create connection and channel and starts the consumer
 		_connection = factory.CreateConnection(); //todo: add try expect
 		_channel = _connection.CreateModel();
 		
@@ -75,6 +75,7 @@ public class SkuFromImageRpc: IDisposable {
 		);
 	}
 
+	// Handler for the incoming messages. This checks the correlation id, converts the body to the output long.
 	private void handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
 		//check if correlation id is correct
 		if (!_callback_mapper.TryRemove(basic_deliver_event_args.BasicProperties.CorrelationId, out var task_completion_source)) {
@@ -102,6 +103,7 @@ public class SkuFromImageRpc: IDisposable {
 		task_completion_source.TrySetResult(skus);
 	}
 
+	// Function for getting sku's from in input image using a rabbitmq RPC service
 	public Task<List<long>> getSkusFromServerWithImageAsync(Mat image, CancellationToken cancellation_token = default) {
 		//create basis properties
 		IBasicProperties properties = _channel.CreateBasicProperties();
@@ -134,6 +136,7 @@ public class SkuFromImageRpc: IDisposable {
 		return task_completion_source.Task;
 	}
 
+	//When this class is deleted this function is called
 	public void Dispose() {
 		_connection.Close();
 		// To make the close function not hang the TaskCompletionSource is created with:
@@ -144,6 +147,8 @@ public class SkuFromImageRpc: IDisposable {
 
 //Class for sending images to the dataset using a simple RabbitMQ queue
 public class DataSendImageToServer {
+	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
+	//In a future version this this should be in a configuration or definition file.
 	private const string _exchange_name = "ai_server";
 	private const string _routing_key = "dataset_image";
 	private const string _queue_name = "dataset_images";
@@ -151,14 +156,16 @@ public class DataSendImageToServer {
 	private readonly IConnection _connection;
 	private readonly IModel _channel;
 
+	//Struct for json serializing
 	private struct SendStruct {
 		public long sku { get; set; }
 		public string vendor { get; set; }
 		public Mat image { get; set; }
 	}
 
-
+	//Constructor that creates the connection to the RabbitMQ server
 	public DataSendImageToServer(string hostname, string username, string password) {
+		
 		var factory = new ConnectionFactory {
 			HostName = hostname,
 			UserName = username,
@@ -193,6 +200,7 @@ public class DataSendImageToServer {
 		);
 	}
 
+	// Function for sending the dataset images to the queue.
 	public void sendToDataSetImageToServer(long sku, string vendor, Mat image) {
 		//create basis properties
 		IBasicProperties properties = _channel.CreateBasicProperties();
@@ -220,6 +228,8 @@ public class DataSendImageToServer {
 
 //Class for getting the sku image index using RabbitMQ with a RPC service
 public class DataGetSkuIndexRpc : IDisposable {
+	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
+	//In a future version this this should be in a configuration or definition file.
 	private const string _exchange_name = "ai_server";
 	private const string _routing_key = "dataset_sku_number";
 	private const string _queue_name = "sku_number";
@@ -230,12 +240,13 @@ public class DataGetSkuIndexRpc : IDisposable {
 	private readonly ConcurrentDictionary<string, TaskCompletionSource<int>> _callback_mapper = new();
 	private EventingBasicConsumer _consumer;
 	
+	//Struct for json serializing
 	private struct SendStruct {
 		public long sku { get; set; }
 		public string vendor { get; set; }
 	}
 	
-	//constructor
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
 	public DataGetSkuIndexRpc(string hostname, string username, string password) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
@@ -288,7 +299,8 @@ public class DataGetSkuIndexRpc : IDisposable {
 			autoAck: true
 		);
 	}
-
+	
+	// Handler for the incoming messages. This checks the correlation id, converts the body to the output int
 	private void handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
 		//check if correlation id is correct
 		if (!_callback_mapper.TryRemove(basic_deliver_event_args.BasicProperties.CorrelationId, out var task_completion_source)) {
@@ -316,6 +328,7 @@ public class DataGetSkuIndexRpc : IDisposable {
 		task_completion_source.TrySetResult(sku_index);
 	}
 
+	// Function for getting sku index using a rabbitmq RPC service
 	public Task<int> getSkuIndex(long sku, string vendor, CancellationToken cancellation_token = default) {
 		//create basis properties
 		IBasicProperties properties = _channel.CreateBasicProperties();
@@ -350,8 +363,10 @@ public class DataGetSkuIndexRpc : IDisposable {
 		cancellation_token.Register(() => _callback_mapper.TryRemove(correlation_id, out _));
 		return task_completion_source.Task;
 	}
+	
+	//When this class is deleted this function is called
 	public void Dispose() {
-		// _connection.Close();
+		_connection.Close();
 		// To make the close function not hang the TaskCompletionSource is created with:
 		// TaskCreationOptions.RunContinuationsAsynchronously
 		// This is a workaround but should be fine
