@@ -1,27 +1,28 @@
-﻿using Emgu.CV;
+﻿using OpenCvSharp;
 using RpcClient;
 
 class client {
-	public void sendImage() {
+	public async Task sendImage() {
 		//DataSendImageToServer
-		var client = new DataSendImageToServer(
+		using DataSendImageToServer client = new DataSendImageToServer(
 			hostname: "20.13.19.141",
 			username: "python_test_user",
 			password: "jedis"
 		);
-		
-		Mat vectron_image2  = CvInvoke.Imread("../../../vectron.png");
+
+		Mat vectron_image2 = Cv2.ImRead("../../../vectron.png");
 		
 		client.sendToDataSetImageToServer(8719992763917 , "Oot", vectron_image2);
+		Console.WriteLine("done sending");
 	}
 
 	public async Task skuTask() {
 		//clientSkuFromImageRpcV2
 		using SkuFromImageRpc clientSkuFromImageRpcV2 = new SkuFromImageRpc("20.13.19.141", "python_test_user", "jedis");
 		
-		Mat vectron_image  = CvInvoke.Imread("../../../vectron.png");
-		Mat virm_image  = CvInvoke.Imread("../../../virm.jpg");
-		Mat icng_image  = CvInvoke.Imread("../../../icng.jpg");
+		Mat vectron_image = Cv2.ImRead("../../../vectron.png");
+		Mat virm_image = Cv2.ImRead("../../../virm.jpg");
+		Mat icng_image = Cv2.ImRead("../../../icng.jpg");
 
 		var skus_task = clientSkuFromImageRpcV2.getSkusFromServerWithImageAsync(vectron_image);
 		var skus2_task = clientSkuFromImageRpcV2.getSkusFromServerWithImageAsync(virm_image);
@@ -31,9 +32,8 @@ class client {
 			Console.WriteLine("sku vectron :{0}", sku);
 		}
 
-		
 		List<long> skus2 = await skus2_task;
-		foreach (long sku in skus) {
+		foreach (long sku in skus2) {
 			Console.WriteLine("sku vrim :{0}", sku);
 		}
 		
@@ -61,8 +61,8 @@ class client {
 class run {
 	static async Task Main() {
 		var xClient = new client();
-		await xClient.skuTask();
-		
+		// await xClient.skuTask();
+		await xClient.sendImage();
 		// await xClient.getIndex();
 	}
 }

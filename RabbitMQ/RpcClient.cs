@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Text.Json;
-using Emgu.CV;
-using Emgu.CV.Structure;
+using OpenCvSharp;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -64,7 +63,7 @@ public class SkuFromImageRpc: IDisposable {
 		
 		//setup callback
 		_consumer.Received += (model, ea) => {
-			handleMessage(model, ea);
+			_handleMessage(model, ea);
 		};
 
 		// add consumer
@@ -76,7 +75,7 @@ public class SkuFromImageRpc: IDisposable {
 	}
 
 	// Handler for the incoming messages. This checks the correlation id, converts the body to the output long.
-	private void handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
+	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
 		//check if correlation id is correct
 		if (!_callback_mapper.TryRemove(basic_deliver_event_args.BasicProperties.CorrelationId, out var task_completion_source)) {
 			return;
@@ -114,10 +113,6 @@ public class SkuFromImageRpc: IDisposable {
 		properties.ReplyTo = _reply_queue_name;
 		properties.ContentType = "image/jpg";
 
-		//convert image to byte arrey
-		var image_bgr = image.ToImage<Bgr, Byte>();
-		byte[] image_data = image_bgr.ToJpegData();
-		
 		//create task completion source
 		var task_completion_source = new TaskCompletionSource<List<long>>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -129,7 +124,7 @@ public class SkuFromImageRpc: IDisposable {
 			exchange: _exchange_name,
 			routingKey: _routing_key,
 			basicProperties: properties,
-			body: image_data
+			body: image.ToBytes()
 		);
 
 		cancellation_token.Register(() => _callback_mapper.TryRemove(correlation_id, out _));
@@ -146,7 +141,7 @@ public class SkuFromImageRpc: IDisposable {
 }
 
 //Class for sending images to the dataset using a simple RabbitMQ queue
-public class DataSendImageToServer {
+public class DataSendImageToServer : IDisposable {
 	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
 	//In a future version this this should be in a configuration or definition file.
 	private const string _exchange_name = "ai_server";
@@ -157,10 +152,10 @@ public class DataSendImageToServer {
 	private readonly IModel _channel;
 
 	//Struct for json serializing
-	private struct SendStruct {
+	private struct _SendStruct {
 		public long sku { get; set; }
 		public string vendor { get; set; }
-		public Mat image { get; set; }
+		public Byte[] image_data { get; set; }
 	}
 
 	//Constructor that creates the connection to the RabbitMQ server
@@ -207,12 +202,12 @@ public class DataSendImageToServer {
 		
 		//set properties
 		properties.Persistent = true;
-		
+
 		//create json
-		var json_struct = new SendStruct {
+		var json_struct = new _SendStruct {
 			sku = sku,
 			vendor = vendor,
-			image = image
+			image_data = image.ToBytes()
 		};
 		var json_string_bytes = JsonSerializer.SerializeToUtf8Bytes(json_struct);
 
@@ -223,6 +218,13 @@ public class DataSendImageToServer {
 			basicProperties: properties,
 			body: json_string_bytes
 		);
+		
+		Console.WriteLine("publish done");
+	}
+
+	//When this class is deleted this function is called
+	public void Dispose() {
+		_connection.Close();
 	}
 }
 
@@ -241,7 +243,7 @@ public class DataGetSkuIndexRpc : IDisposable {
 	private EventingBasicConsumer _consumer;
 	
 	//Struct for json serializing
-	private struct SendStruct {
+	private struct _SendStruct {
 		public long sku { get; set; }
 		public string vendor { get; set; }
 	}
@@ -289,7 +291,7 @@ public class DataGetSkuIndexRpc : IDisposable {
 		
 		//setup callback
 		_consumer.Received += (model, ea) => {
-			handleMessage(model, ea);
+			_handleMessage(model, ea);
 		};
 
 		// add consumer
@@ -301,7 +303,7 @@ public class DataGetSkuIndexRpc : IDisposable {
 	}
 	
 	// Handler for the incoming messages. This checks the correlation id, converts the body to the output int
-	private void handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
+	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
 		//check if correlation id is correct
 		if (!_callback_mapper.TryRemove(basic_deliver_event_args.BasicProperties.CorrelationId, out var task_completion_source)) {
 			return;
@@ -340,7 +342,7 @@ public class DataGetSkuIndexRpc : IDisposable {
 		properties.ContentType = "application/json";
 		
 		//create json
-		var json_struct = new SendStruct {
+		var json_struct = new _SendStruct {
 			sku = sku,
 			vendor = vendor
 		};

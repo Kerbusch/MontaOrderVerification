@@ -5,7 +5,7 @@ using RabbitMQ.Client.Events;
 namespace rabbitmqTestRecive; 
 
 //Class for receiving the sku number and vendor from the queue and returning the index
-public class SkuIndexReceiver {
+public class SkuIndexReceiver : IDisposable  {
 	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
 	//In a future version this this should be in a configuration or definition file.
 	private const string _queue_name = "sku_number";
@@ -15,7 +15,7 @@ public class SkuIndexReceiver {
 	private EventingBasicConsumer _consumer;
 	
 	//Struct for json deserializing
-	private struct ReceiveStruct {
+	private struct _ReceiveStruct {
 		public long sku { get; set; }
 		public string vendor { get; set; }
 	}
@@ -49,7 +49,7 @@ public class SkuIndexReceiver {
 		
 		//setup callback
 		_consumer.Received += (model, ea) => {
-			handleMessage(model, ea);
+			_handleMessage(model, ea);
 		};
 		
 		//add consumer
@@ -61,7 +61,7 @@ public class SkuIndexReceiver {
 	}
 
 	// Handler for the incoming messages. After the processing it publishes a message to the return queue
-	private void handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
+	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
 		int response = 0;
 
 		//get the body
@@ -73,9 +73,10 @@ public class SkuIndexReceiver {
 		replyProps.CorrelationId = props.CorrelationId;
 
 		try {
-			//Deserialize body to ReceiveStruct
-			ReceiveStruct received = JsonSerializer.Deserialize<ReceiveStruct>(body);
+			//Deserialize body to _ReceiveStruct
+			_ReceiveStruct received = JsonSerializer.Deserialize<_ReceiveStruct>(body);
 
+			Console.WriteLine("Index request ->");
 			Console.WriteLine("sku: {0}", received.sku);
 			Console.WriteLine("vendor: {0}", received.vendor);
 
@@ -98,5 +99,10 @@ public class SkuIndexReceiver {
 				body: json_bytes);
 			_channel.BasicAck(deliveryTag: basic_deliver_event_args.DeliveryTag, multiple: false);
 		}
+	}
+	
+	//When this class is deleted this function is called
+	public void Dispose() {
+		_connection.Close();
 	}
 }
