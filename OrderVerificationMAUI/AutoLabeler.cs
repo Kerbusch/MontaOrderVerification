@@ -17,28 +17,29 @@ namespace OrderVerificationMAUI
         public AutoLabeler() { }
 
         // Loop through all the images and labels them
-        public static void labelPictures(List<List<string>> files, string sku_nummer)
+        // files consists of a list with [file_path, file_name] of every picture that needs to be labeld
+        public static void labelMultiplePictures(List<List<string>> files, string sku_nummer)
         {
             foreach (List<string> file in files)
             {
-                createLabel(file, sku_nummer);
+                createLabel(file[0], file[1] , sku_nummer);
             }
         }
 
         // creates a label for the given image
-        public static void createLabel (List<string> file, string sku_nummer)
+        public static void createLabel (string file_path, string file_name, string sku_nummer)
         {
-            if (!File.Exists(file[1].Replace("jpg", "xml")))
+            if (!File.Exists(file_path.Replace("jpg", "xml")))
             {
-                OpenCvSharp.Mat image = CameraModule.makeBackgroundTransparent(OpenCvSharp.Cv2.ImRead(file[1]));
+                OpenCvSharp.Mat image = CameraModule.makeBackgroundTransparent(OpenCvSharp.Cv2.ImRead(file_path));
                 int[][] max_min = getMaxMin(image);
-                using (XmlWriter writer = XmlWriter.Create(file[1].Replace("jpg", "xml")))
+                using (XmlWriter writer = XmlWriter.Create(file_path.Replace("jpg", "xml")))
                 {
                     writer.WriteStartDocument();    
                     writer.WriteStartElement("annotation");
                     writer.WriteElementString("folder", sku_nummer);
-                        writer.WriteElementString("filename", file[0]);
-                        writer.WriteElementString("path", file[1]);
+                        writer.WriteElementString("filename", file_name);
+                        writer.WriteElementString("path", file_path);
                         writer.WriteStartElement("source");
                             writer.WriteElementString("database", "Unknown");
                         writer.WriteEndElement();

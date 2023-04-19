@@ -84,8 +84,7 @@ public partial class CapturePicture : ContentPage
     {
         if (last_path != "")
         {
-            List<string> tmp = new List<string>() { (sku_number + " (" + (picture + last_number).ToString() + ").jpg"), last_path };
-            AutoLabeler.createLabel(tmp, sku_number);
+            AutoLabeler.createLabel(last_path, (sku_number + " (" + (picture + last_number).ToString() + ").jpg"), sku_number);
             while (!sendPicture(OpenCvSharp.Cv2.ImRead(last_path)))
             {
                 bool answer = await DisplayAlert("Connection error", "Can't connect to the server", "Close", "Retry");
