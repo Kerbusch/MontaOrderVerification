@@ -14,8 +14,8 @@ public partial class CapturePicture : ContentPage
 
     // Constuctor
     public CapturePicture(string new_sku_number)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         if (new_sku_number == "")
         {
             Sku_label.Text = "No sku number provided";
@@ -28,7 +28,7 @@ public partial class CapturePicture : ContentPage
 
         path = getPath();
         picture_counter.Text = (total_pictures - picture).ToString();
-    
+
         if (Directory.Exists(path + picture_path + sku_number))
         {
             last_number = previousNumbers();
@@ -82,16 +82,29 @@ public partial class CapturePicture : ContentPage
     // Makes the next picture and displays it on the screen
     private async void clickedNextPicture(object sender, EventArgs e)
     {
-        if (last_path != "") { 
+        if (last_path != "")
+        {
             List<string> tmp = new List<string>() { (sku_number + " (" + (picture + last_number).ToString() + ").jpg"), last_path };
             AutoLabeler.createLabel(tmp, sku_number);
+            while (!sendPicture(OpenCvSharp.Cv2.ImRead(last_path)))
+            {
+                bool answer = await DisplayAlert("Connection error", "Can't connect to the server", "Close", "Retry");
+                if (answer)
+                {
+                    await Navigation.PushAsync(new MainPage());
+                    return;
+                }
+            }
         }
 
-        if (total_pictures >= -picture) {
-            if (button_next_picture.Text == "Take next picture") {
-                button_next_picture.Text = "Next sku";
+        if (total_pictures >= -picture)
+        {
+            if (button_next_picture.Text == "Take next picture")
+            {
+                button_next_picture.Text = "Finish this sku";
             }
-            else {
+            else
+            {
                 await Navigation.PushAsync(new MainPage());
                 return;
             }
@@ -118,5 +131,11 @@ public partial class CapturePicture : ContentPage
         CameraModule.takePicture(last_path);
 
         last_image.Source = last_path;
+    }
+
+    // Sends picture with rabbitmq to the server, returns false if failed
+    private bool sendPicture(OpenCvSharp.Mat picture)
+    {
+        return false;
     }
 }
