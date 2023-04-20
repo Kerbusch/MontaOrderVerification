@@ -31,7 +31,7 @@ namespace OrderVerificationMAUI
         {
             if (!File.Exists(file_path.Replace("jpg", "xml")))
             {
-                OpenCvSharp.Mat image = CameraModule.makeBackgroundTransparent(OpenCvSharp.Cv2.ImRead(file_path));
+                Mat image = CameraModule.makeBackgroundTransparent(Cv2.ImRead(file_path));
                 int[][] max_min = getMaxMin(image);
                 using (XmlWriter writer = XmlWriter.Create(file_path.Replace("jpg", "xml")))
                 {

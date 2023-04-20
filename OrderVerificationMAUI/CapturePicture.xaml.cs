@@ -1,3 +1,4 @@
+using OpenCvSharp;
 using System.Diagnostics;
 
 namespace OrderVerificationMAUI;
@@ -6,39 +7,30 @@ public partial class CapturePicture : ContentPage
 {
     string sku_number;
     string path;
-    string picture_path = "Trainedmodel\\DatasetOOT\\Training\\";
-    string last_path = "";
+    string picture_path;
     int picture = 0;
-    int total_pictures = 1;
+    int total_pictures = 50;
     int last_number;
+    Mat last_picture;
 
     // Constuctor
     public CapturePicture(string new_sku_number)
     {
         InitializeComponent();
-        if (new_sku_number == "")
-        {
+        if (new_sku_number == "") {
             Sku_label.Text = "No sku number provided";
             sku_number = "No_sku_number_provided";
         }
-        else
-        {
+        else {
             sku_number = new_sku_number;
         }
 
         path = getPath();
+        picture_path = path + "last_picture.jpg";
         picture_counter.Text = (total_pictures - picture).ToString();
 
-        if (Directory.Exists(path + picture_path + sku_number))
-        {
-            last_number = previousNumbers();
-            Sku_label.Text = sku_number + " (" + (last_number + 1) + ") ";
-        }
-        else
-        {
-            Directory.CreateDirectory(path + picture_path + sku_number);
-            Sku_label.Text = sku_number + " (1) ";
-        }
+        last_number = getPreviousNumbers(sku_number);
+        Sku_label.Text = sku_number + " (" + (last_number + 1) + ") ";
     }
 
     // Returns the base path of the repo directory
@@ -47,11 +39,9 @@ public partial class CapturePicture : ContentPage
         string path = Path.GetDirectoryName(AppContext.BaseDirectory);
         string[] paths = path.Split('\\');
         path = "";
-        for (int i = 0; i < paths.Length; i++)
-        {
+        for (int i = 0; i < paths.Length; i++) {
             path += paths[i] + "\\";
-            if (paths[i] == "MontaOrderVerification")
-            {
+            if (paths[i] == "MontaOrderVerification") {
                 break;
             }
         }
@@ -59,21 +49,19 @@ public partial class CapturePicture : ContentPage
     }
 
     // Checks what the highes nummer 
-    private int previousNumbers()
+    private int previousNumber()
     {
         string[] all_files = Directory.GetFiles(path + picture_path + sku_number + "\\", "*.jpg");
         List<int> numbers = new List<int>();
 
-        foreach (string fileName in all_files)
-        {
+        foreach (string fileName in all_files) {
             string tmp = fileName.Replace(path + picture_path + sku_number + "\\" + sku_number + " (", "");
             tmp = tmp.Replace(").jpg", "");
             int i = int.Parse(tmp);
             numbers.Add(i);
         }
 
-        if (numbers.Count > 0)
-        {
+        if (numbers.Count > 0) {
             return numbers.Max();
         }
         return 0;
@@ -82,39 +70,35 @@ public partial class CapturePicture : ContentPage
     // Makes the next picture and displays it on the screen
     private async void clickedNextPicture(object sender, EventArgs e)
     {
-        if (last_path != "")
-        {
-            AutoLabeler.createLabel(last_path, (sku_number + " (" + (picture + last_number).ToString() + ").jpg"), sku_number);
-            while (!sendPicture(OpenCvSharp.Cv2.ImRead(last_path)))
-            {
+        if (picture != 0) {
+            AutoLabeler.createLabel(picture_path, (sku_number + " (" + (picture + last_number).ToString() + ").jpg"), sku_number);
+            while (!sendPicture(OpenCvSharp.Cv2.ImRead(picture_path))) {
                 bool answer = await DisplayAlert("Connection error", "Can't connect to the server", "Close", "Retry");
-                if (answer)
-                {
+                if (answer) {
                     await Navigation.PushAsync(new MainPage());
                     return;
                 }
             }
         }
 
-        if (total_pictures >= -picture)
+        if (picture >= (total_pictures - 1))
         {
-            if (button_next_picture.Text == "Take next picture")
-            {
+            if (button_next_picture.Text == "Take next picture") {
                 button_next_picture.Text = "Finish this sku";
             }
-            else
-            {
+            else {
                 await Navigation.PushAsync(new MainPage());
                 return;
             }
         }
 
-        last_path = path + picture_path + sku_number + "\\" + sku_number + " (" + (picture + last_number + 1).ToString() + ").jpg";
+        last_picture = CameraModule.takePicture();
+        if (last_picture == null) {
+            await DisplayAlert("Camera error", "Fail to make picture", "Close");
+        }
 
-        CameraModule cameraModule = new CameraModule();
-        CameraModule.takePicture(last_path);
-
-        last_image.Source = last_path;
+        last_picture.ImWrite(picture_path);
+        last_image.Source = picture_path;
 
         picture++;
         picture_counter.Text = (total_pictures - picture).ToString();
@@ -122,19 +106,28 @@ public partial class CapturePicture : ContentPage
     }
 
     // Replaces the last made picture with a new picture and displays the new picture on the screen 
-    private void clickedRetakeLastPicture(object sender, EventArgs e)
+    private async void clickedRetakeLastPicture(object sender, EventArgs e)
     {
-        if (picture == 0) { return; }
+        if (picture == 0) { 
+            await DisplayAlert("Camera error", "Fail to make picture", "Close");
+        }
 
-        CameraModule cameraModule = new CameraModule();
-        CameraModule.takePicture(last_path);
+        last_picture = CameraModule.takePicture();
+        if (last_picture == null) { return; }
 
-        last_image.Source = last_path;
+        last_picture.ImWrite(path + "last_picture.jpg");
+        last_image.Source = path + "last_picture.jpg";
     }
 
     // Sends picture with rabbitmq to the server, returns false if failed
     private bool sendPicture(OpenCvSharp.Mat picture)
     {
-        return false;
+        return true;
+    }
+
+    // gets the last used number of the given sku from rabbitmq
+    private int getPreviousNumbers(string sku_number)
+    {
+        return 1;
     }
 }

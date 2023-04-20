@@ -1,4 +1,5 @@
 using OpenCvSharp;
+using System.Diagnostics;
 
 namespace OrderVerificationMAUI
 {
@@ -9,7 +10,7 @@ namespace OrderVerificationMAUI
 
 
         // Take picture and return the mat
-        public static Mat takePicture(string pictureFilePath)
+        public static Mat takePicture()
         {
             String liveStreamWindow = "Photo Window (Press any key to take a picture)";
 
@@ -35,7 +36,8 @@ namespace OrderVerificationMAUI
             }
             catch (OpenCvSharpException e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
+                return frame;
             }
 
             while (Cv2.WaitKey(1) == -1)
@@ -45,6 +47,9 @@ namespace OrderVerificationMAUI
                     Cv2.ImShow(liveStreamWindow, frame);
                 }
             }
+
+            videoCapture.Dispose();
+            Cv2.DestroyAllWindows();
 
             return frame;
 
