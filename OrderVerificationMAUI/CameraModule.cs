@@ -53,7 +53,7 @@ namespace OrderVerificationMAUI
         // makes all the pixels around the object transparent
         public static OpenCvSharp.Mat makeBackgroundTransparent(OpenCvSharp.Mat original) {
             OpenCvSharp.Mat input = new();
-            OpenCvSharp.Size s = new OpenCvSharp.Size(3, 3);
+            OpenCvSharp.Size s = new OpenCvSharp.Size(11, 11);
             OpenCvSharp.Cv2.GaussianBlur(original, input, s, 0);
 
             OpenCvSharp.Mat input_bgra = new();

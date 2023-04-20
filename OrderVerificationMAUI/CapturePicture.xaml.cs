@@ -87,7 +87,7 @@ public partial class CapturePicture : ContentPage
             AutoLabeler.createLabel(tmp, sku_number);
         }
 
-        if (total_pictures >= -picture) {
+        if (picture >= (total_pictures - 1)) { 
             if (button_next_picture.Text == "Take next picture") {
                 button_next_picture.Text = "Next sku";
             }
