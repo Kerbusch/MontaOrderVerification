@@ -15,7 +15,7 @@ public partial class CapturePicture : ContentPage
     // Constuctor
     public CapturePicture(string new_sku_number)
 	{
-		InitializeComponent();
+        InitializeComponent();
         if (new_sku_number == "")
         {
             Sku_label.Text = "No sku number provided";

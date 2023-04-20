@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OrderVerificationMAUI.SelectCompany"
+             Title="SelectCompany">
+
+
+    <Grid BackgroundColor="#FFFFBF">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="0"
+            RowSpacing="10"
+            ColumnSpacing="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="1"
+                Text="Pick the company:"
+                HorizontalOptions="Center"
+                FontSize="Header"/>
+
+            <Picker
+                x:Name="drop_down_menu"
+                Grid.Row="2"
+                WidthRequest="200"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                TextColor="Black"
+                BackgroundColor="#FFFF7a"/>
+            
+
+            <Grid
+                Grid.Row="3">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                x:Name="button_make_pictures"
+                Grid.Column="1"
+                Text="Make pictures"
+                Clicked="clickedMakePictures"
+                FontSize="Large"
+                CornerRadius="10"
+                BorderWidth="3"
+                TextColor="Black"
+                BorderColor="Black"
+                BackgroundColor="#FFFF7a"/>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

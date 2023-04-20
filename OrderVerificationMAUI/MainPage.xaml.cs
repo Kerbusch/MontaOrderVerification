@@ -89,7 +89,7 @@ public partial class MainPage : ContentPage
     private async void clickedEnter(object sender, EventArgs e)
     {
         sku_number = sku_entry.Text;
-        await Navigation.PushAsync(new CapturePicture(sku_number));
+        await Navigation.PushAsync(new SelectCompany(sku_number));
     }
 }
 

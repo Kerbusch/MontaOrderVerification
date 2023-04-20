@@ -9,5 +9,8 @@
     <MauiXaml Update="CapturePicture.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
+    <MauiXaml Update="SelectCompany.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
   </ItemGroup>
 </Project>
