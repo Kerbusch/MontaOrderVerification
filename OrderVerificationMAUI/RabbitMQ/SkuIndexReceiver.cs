@@ -2,18 +2,18 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace rabbitmqTestRecive; 
+namespace RabbitMQ; 
 
 //Class for receiving the sku number and vendor from the queue and returning the index
-public class SkuIndexReceiver : IDisposable  {
+public class SkuIndexReceiver : IDisposable {
 	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
 	//In a future version this this should be in a configuration or definition file.
 	private const string _queue_name = "sku_number";
-	
+
 	private readonly IConnection _connection;
 	private readonly IModel _channel;
 	private EventingBasicConsumer _consumer;
-	
+
 	//Struct for json deserializing
 	private struct _ReceiveStruct {
 		public long sku { get; set; }
@@ -27,11 +27,11 @@ public class SkuIndexReceiver : IDisposable  {
 			UserName = username,
 			Password = password
 		};
-		
+
 		//create connection and channel
 		_connection = factory.CreateConnection(); //todo: add try expect
 		_channel = _connection.CreateModel();
-		
+
 		//declare queue
 		_channel.QueueDeclare(
 			queue: _queue_name,
@@ -40,18 +40,18 @@ public class SkuIndexReceiver : IDisposable  {
 			autoDelete: false,
 			arguments: null
 		);
-		
+
 		//set Qos
 		_channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
-		
+
 		//setup consumer
 		_consumer = new EventingBasicConsumer(_channel);
-		
+
 		//setup callback
 		_consumer.Received += (model, ea) => {
 			_handleMessage(model, ea);
 		};
-		
+
 		//add consumer
 		_channel.BasicConsume(
 			consumer: _consumer,
@@ -66,7 +66,7 @@ public class SkuIndexReceiver : IDisposable  {
 
 		//get the body
 		var body = basic_deliver_event_args.Body.ToArray();
-		
+
 		//set the return correlation id to the received id in the properties
 		var props = basic_deliver_event_args.BasicProperties;
 		var replyProps = _channel.CreateBasicProperties();
@@ -91,7 +91,7 @@ public class SkuIndexReceiver : IDisposable  {
 		finally {
 			//get bytes array from response
 			var json_bytes = JsonSerializer.SerializeToUtf8Bytes(response);
-			
+
 			//Publish response to reply queue
 			_channel.BasicPublish(exchange: string.Empty,
 				routingKey: props.ReplyTo,
@@ -100,7 +100,7 @@ public class SkuIndexReceiver : IDisposable  {
 			_channel.BasicAck(deliveryTag: basic_deliver_event_args.DeliveryTag, multiple: false);
 		}
 	}
-	
+
 	//When this class is deleted this function is called
 	public void Dispose() {
 		_connection.Close();

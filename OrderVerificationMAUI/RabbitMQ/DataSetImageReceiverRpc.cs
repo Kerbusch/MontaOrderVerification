@@ -3,7 +3,7 @@ using OpenCvSharp;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace rabbitmqTestRecive; 
+namespace RabbitMQ; 
 
 //Class for receiving the dataset images from the queue
 public class DataSetImageReceiverRpc : IDisposable {
