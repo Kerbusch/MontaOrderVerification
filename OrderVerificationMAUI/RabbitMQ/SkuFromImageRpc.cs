@@ -91,6 +91,8 @@ public class SkuFromImageRpc: IDisposable {
 		if (basic_deliver_event_args.BasicProperties.ContentType == "application/json") {
 			//get json from body
 			skus = JsonSerializer.Deserialize<List<long>>(body);
+			
+			//TODO: add error handling jsonSerializer
 				
 			//check if return was null
 			if (skus == null) {
