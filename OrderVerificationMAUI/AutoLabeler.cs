@@ -69,7 +69,7 @@ namespace OrderVerificationMAUI
         }
 
         // Gets the max and min values of the non black pixels
-        public static int[][] getMaxMin(OpenCvSharp.Mat image)
+        public static int[][] getMaxMin(Mat image)
         {
             int[] x_values = { 0, image.Width }; // maxX, minX
             int[] y_values = { 0, image.Height }; // maxY, minY
