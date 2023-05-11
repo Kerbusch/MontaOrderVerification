@@ -26,11 +26,11 @@ def yolo_to_xml_bbox(bbox, w, h):
 # add new class labels to this list
 classes = ['8719992763139', '8719992763351', '8719992763511', '8719992763542']
 
-# input_dir = "../Datasets/DatasetOOT/Training/"
-# output_dir = "../Datasets/Dataset_OOT_YOLOv8/Training/"
+input_dir = "../Datasets/DatasetOOT/Training/"
+output_dir = "../Datasets/Dataset_OOT_YOLOv8/Training/"
 
-input_dir = "../Datasets/DatasetOOT/Validation/"
-output_dir = "../Datasets/Dataset_OOT_YOLOv8/Validation/"
+# input_dir = "../Datasets/DatasetOOT/Validation/"
+# output_dir = "../Datasets/Dataset_OOT_YOLOv8/Validation/"
 
 # create the labels folder (output directory)
 os.makedirs(output_dir, exist_ok=True)
