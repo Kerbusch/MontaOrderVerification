@@ -28,6 +28,8 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -54,6 +56,10 @@
 	  <PackageReference Include="OpenCV" Version="2.4.11" />
 	  <PackageReference Include="OpenCvSharp4" Version="4.7.0.20230115" />
 	  <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.7.0.20230115" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="RabbitMQ\RabbitMQ.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
