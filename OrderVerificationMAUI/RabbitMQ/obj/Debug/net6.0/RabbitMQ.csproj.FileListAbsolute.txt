@@ -1,0 +1,10 @@
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\bin\Debug\net6.0\RabbitMQ.deps.json
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\bin\Debug\net6.0\RabbitMQ.dll
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\bin\Debug\net6.0\RabbitMQ.pdb
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\obj\Debug\net6.0\RabbitMQ.csproj.AssemblyReference.cache
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\obj\Debug\net6.0\RabbitMQ.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\obj\Debug\net6.0\RabbitMQ.csproj.CoreCompileInputs.cache
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\obj\Debug\net6.0\RabbitMQ.dll
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\obj\Debug\net6.0\refint\RabbitMQ.dll
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\obj\Debug\net6.0\RabbitMQ.pdb
+C:\Users\jarno\OneDrive\Documenten\MontaOrderVerification\OrderVerificationMAUI\RabbitMQ\obj\Debug\net6.0\ref\RabbitMQ.dll
