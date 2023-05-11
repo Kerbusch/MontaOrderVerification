@@ -72,7 +72,7 @@
 	  <Compile Update="RabbitMQ\DataSendImageToServer.cs">
 	    <Link>RabbitMQ\DataSendImageToServer.cs</Link>
 	  </Compile>
-	  <Compile Update="RabbitMQ\DataSetImageReceiverRpc.cs">
+	  <Compile Update="RabbitMQ\DataSetImageReceiver.cs">
 	    <Link>RabbitMQ\DataSetImageReceiverRpc.cs</Link>
 	  </Compile>
 	  <Compile Update="RabbitMQ\SkuFromImageRpc.cs">
