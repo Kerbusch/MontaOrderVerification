@@ -1,0 +1,13 @@
+path: Dataset_OOT_YOLOv8  # dataset root dir
+train: Training  # train images (relative to 'path') 128 images
+val: Validation  # val images (relative to 'path') 128 images
+#test:  Test # test images (optional)
+
+# Classes
+nc: 4
+names: 
+  0: '8719992763139' #keto granola
+  1: '8719992763351' #pumpkin spice
+  2: '8719992763511' #koffie keto
+  3: '8719992763542' #chia spice
+
