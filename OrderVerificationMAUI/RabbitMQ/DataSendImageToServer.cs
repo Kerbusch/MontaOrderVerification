@@ -82,8 +82,6 @@ public class DataSendImageToServer : IDisposable {
 			basicProperties: properties,
 			body: json_string_bytes
 		);
-		
-		Console.WriteLine("publish done");
 	}
 
 	//When this class is deleted this function is called

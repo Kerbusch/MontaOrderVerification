@@ -116,7 +116,7 @@ public class OrderData: IDisposable {
 
     //remove the order from the local list
     public bool removeOrder(Order order) {
-     return _orders.Remove(order);
+        return _orders.Remove(order);
     }
 
     public void Dispose() {

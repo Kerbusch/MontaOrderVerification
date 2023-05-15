@@ -43,8 +43,12 @@ namespace DatasetImageProcessing
 
         //return a yolo format string from the yolo index and bounding box
         private string getBoundingBoxString(int yolo_index, BoundingBox bounding_box) {
+            //create yolo string
             string yolo_string = yolo_index + " " + bounding_box.x_center + " " + bounding_box.y_center + " " + bounding_box.width + " " + bounding_box.height;
+            
+            //replace ',' with '.'
             yolo_string = yolo_string.Replace(",", ".");
+            
             return yolo_string;
         }
 
@@ -68,17 +72,17 @@ namespace DatasetImageProcessing
     public class ImageLabeling
     {
         // get bounding box from input alpha image
-        public int[] getBoundingBox(Mat image)
+        public static int[] getBoundingBox(Mat alpha_image)
         {
-            int[] x_values = { 0, image.Width }; // maxX, minX
-            int[] y_values = { 0, image.Height }; // maxY, minY
+            int[] x_values = { 0, alpha_image.Width }; // maxX, minX
+            int[] y_values = { 0, alpha_image.Height }; // maxY, minY
             int[][] rtn = { x_values, y_values };
 
-            for (int y = 0; y < image.Rows; ++y)
+            for (int y = 0; y < alpha_image.Rows; ++y)
             {
-                for (int x = 0; x < image.Cols; ++x)
+                for (int x = 0; x < alpha_image.Cols; ++x)
                 {
-                    if (image.At<Vec4b>(y, x)[3] != 0)
+                    if (alpha_image.At<Vec4b>(y, x)[3] != 0)
                     {
                         if (x > rtn[0][0]) // maxX
                         {
@@ -110,7 +114,7 @@ namespace DatasetImageProcessing
         }
 
         // create a label in yolo format and write this to file.
-        public void createLabel(int[] bounding_box, Mat image, long sku, string path, string filename_image)
+        public static void createLabelFile(int[] bounding_box, Mat image, long sku, string path, string filename_image)
         {
             // sku = 89548934
             // path = ../../
@@ -140,9 +144,12 @@ namespace DatasetImageProcessing
             else {
                 label_filename = filename_image + ".txt";
             }
+            
+            //bounding box path
+            string bounding_box_path = Path.Combine(path, label_filename);
              
             //write label
-            using (StreamWriter output_file = new StreamWriter(Path.Combine(path, label_filename))) {
+            using (StreamWriter output_file = new StreamWriter(bounding_box_path)) {
                 output_file.WriteLine(yolo_string);
             }
         }
