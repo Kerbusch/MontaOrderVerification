@@ -1,16 +1,28 @@
 ﻿using DatasetImageProcessing;
 using OpenCvSharp;
+using System.Drawing;
 
 class Run
 {
     static async Task Main()
     {
-        var image = new ImageProcessing();
-        Mat picture = Cv2.ImRead("C:\\Users\\jarno\\OneDrive\\Documenten\\MontaOrderVerification\\DatasetImageProcessing\\test.jpg");
-        int[] color = {255, 0, 0}; // {210, 184, 87}
-        Mat alpha = image.getAlphaMat(picture);
-        Mat new_picture = image.changeColor(alpha, color);
-        Cv2.ImWrite("C:\\Users\\jarno\\OneDrive\\Documenten\\MontaOrderVerification\\DatasetImageProcessing\\new_test.jpg", new_picture);
+        long[] skus = { 8719992763634, 8719992763573 };
+        foreach (long sku in skus)
+        {
+            string path = "C:\\Users\\jarno\\OneDrive\\Documenten\\MontaOrderVerification\\Trainedmodel\\DatasetOOT\\Training\\" + sku;
+            string new_path = "C:\\Users\\jarno\\OneDrive\\Documenten\\MontaOrderVerification\\Trainedmodel\\DatasetOOT\\new_dataset\\" + sku;
+
+            string[] all_files = Directory.GetFiles(path, "*.jpg");
+            int index = 0;
+
+            foreach (string fileName in all_files)
+            {
+                var dataset_images = new DatasetImages();
+
+                Mat picture = Cv2.ImRead(fileName);
+                dataset_images.saveImageToDatasetAndChangeColor(picture, new_path, sku, index++);
+            }
+        }
     }
 }
 

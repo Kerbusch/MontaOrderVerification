@@ -9,9 +9,10 @@ namespace DatasetImageProcessing
             {8719992763139, 0},
             {8719992763351, 1},
             {8719992763511, 2},
-            {8719992763542, 3}
+            {8719992763634, 3},
+            {8719992763573, 4}
         };
-	
+
         // bounding box struct
         private struct BoundingBox {
             public float x_center { get; set; }
@@ -67,7 +68,7 @@ namespace DatasetImageProcessing
     public class ImageLabeling
     {
         // get bounding box from input alpha image
-        public static int[] getBoundingBox(Mat image)
+        public int[] getBoundingBox(Mat image)
         {
             int[] x_values = { 0, image.Width }; // maxX, minX
             int[] y_values = { 0, image.Height }; // maxY, minY
@@ -109,7 +110,7 @@ namespace DatasetImageProcessing
         }
 
         // create a label in yolo format and write this to file.
-        public static void createLabel(int[] bounding_box, Mat image, long sku, string path, string filename_image)
+        public void createLabel(int[] bounding_box, Mat image, long sku, string path, string filename_image)
         {
             // sku = 89548934
             // path = ../../
