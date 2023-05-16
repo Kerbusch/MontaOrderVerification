@@ -28,6 +28,8 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -57,8 +59,33 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="RabbitMQ\RabbitMQ.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="CapturePicture.xaml.cs">
 	    <DependentUpon>CapturePicture.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="RabbitMQ\obj\Debug\net6.0\RabbitMQ.AssemblyInfo.cs">
+	    <Link>Comunication\obj\Debug\net6.0\RabbitMQ.AssemblyInfo.cs</Link>
+	  </Compile>
+	  <Compile Update="RabbitMQ\obj\Debug\net6.0\RabbitMQ.GlobalUsings.g.cs">
+	    <Link>Comunication\obj\Debug\net6.0\RabbitMQ.GlobalUsings.g.cs</Link>
+	  </Compile>
+	  <Compile Update="RabbitMQ\DataGetSkuIndexRpc.cs">
+	    <Link>RabbitMQ\DataGetSkuIndexRpc.cs</Link>
+	  </Compile>
+	  <Compile Update="RabbitMQ\DataSendImageToServer.cs">
+	    <Link>RabbitMQ\DataSendImageToServer.cs</Link>
+	  </Compile>
+	  <Compile Update="RabbitMQ\DataSetImageReceiverRpc.cs">
+	    <Link>RabbitMQ\DataSetImageReceiverRpc.cs</Link>
+	  </Compile>
+	  <Compile Update="RabbitMQ\SkuFromImageRpc.cs">
+	    <Link>RabbitMQ\SkuFromImageRpc.cs</Link>
+	  </Compile>
+	  <Compile Update="RabbitMQ\SkuIndexReceiver.cs">
+	    <Link>RabbitMQ\SkuIndexReceiver.cs</Link>
 	  </Compile>
 	</ItemGroup>
 
@@ -66,6 +93,12 @@
 	  <MauiXaml Update="CapturePicture.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="RabbitMQ\obj\Debug\net6.0\RabbitMQ.GeneratedMSBuildEditorConfig.editorconfig">
+	    <Link>Comunication\obj\Debug\net6.0\RabbitMQ.GeneratedMSBuildEditorConfig.editorconfig</Link>
+	  </None>
 	</ItemGroup>
 
 </Project>
