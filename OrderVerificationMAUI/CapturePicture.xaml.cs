@@ -126,7 +126,7 @@ public partial class CapturePicture : ContentPage
     // Sends picture with rabbitmq to the server, returns false if failed
     private bool sendPicture(OpenCvSharp.Mat picture)
     {
-        _send_to_RabbitMQ.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), "Oat", picture);
+        _send_to_RabbitMQ.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), "OOT", picture);
         return true;
     }
 
