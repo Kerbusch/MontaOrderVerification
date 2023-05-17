@@ -13,12 +13,12 @@ public partial class CapturePicture : ContentPage
     int total_pictures = 50;
     int last_number;
     Mat last_picture;
-    private DataSendImageToServer _send_to_RabbitMQ;
+    private DataSetImageSender _setToRabbitMq;
 
     // Constuctor
     public CapturePicture(string new_sku_number)
     {
-        _send_to_RabbitMQ = new DataSendImageToServer("20.13.19.141", "python_test_user", "jedis");
+        _setToRabbitMq = new DataSetImageSender("20.13.19.141", "python_test_user", "jedis");
 
         InitializeComponent();
         if (new_sku_number == "") {
@@ -126,7 +126,7 @@ public partial class CapturePicture : ContentPage
     // Sends picture with rabbitmq to the server, returns false if failed
     private bool sendPicture(OpenCvSharp.Mat picture)
     {
-        _send_to_RabbitMQ.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), "Oat", picture);
+        _setToRabbitMq.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), "Oat", picture);
         return true;
     }
 

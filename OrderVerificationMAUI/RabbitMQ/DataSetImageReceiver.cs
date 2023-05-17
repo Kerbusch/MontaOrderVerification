@@ -82,6 +82,9 @@ public class DataSetImageReceiver : IDisposable {
 		catch (Exception exception) { 
 			//Write exception
 			Debug.WriteLine($" [.] {exception.Message}");
+			
+			//_channel.BasicAck(deliveryTag: basic_deliver_event_args.DeliveryTag, multiple: false);
+			throw exception;
 		}
 		finally {
 			//Acknowledge delivery

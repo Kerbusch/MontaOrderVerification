@@ -22,8 +22,13 @@ namespace DatasetImageProcessing
         }
 
         //get the yolo index from the sku using the dictionary above
-        private int getYoloIndexFromSku(long sku) {
+        public int getYoloIndexFromSku(long sku) {
             return _yolo_indexes[sku];
+        }
+
+        //check of the sku is know in the class dictionary
+        public bool checkSkuIndexKnown(long sku) {
+            return _yolo_indexes.ContainsKey(sku);
         }
 
         //convert the xml bounding box to the yolo format

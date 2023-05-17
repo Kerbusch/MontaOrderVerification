@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 using System.Drawing;
 
 namespace DatasetImageProcessing
 {
     // Class to process images by changing the background to a color or to alpha (transparent)
-    internal class ImageProcessing
+    public class ImageProcessing
     {
-        // Constructor
-        public ImageProcessing() { }
-
         // Function to change background color to the given RGB color
         public Mat changeColor(Mat org_image, Mat alpha_image, Color color)
         {

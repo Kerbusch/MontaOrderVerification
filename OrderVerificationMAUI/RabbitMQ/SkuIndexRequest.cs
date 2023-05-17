@@ -6,7 +6,7 @@ using RabbitMQ.Client.Events;
 namespace RabbitMQ; 
 
 //Class for getting the sku image index using RabbitMQ with a RPC service
-public class DataGetSkuIndexRpc : IDisposable {
+public class SkuIndexRequest : IDisposable {
 	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
 	//In a future version this this should be in a configuration or definition file.
 	private const string _exchange_name = "ai_server";
@@ -26,7 +26,7 @@ public class DataGetSkuIndexRpc : IDisposable {
 	}
 	
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
-	public DataGetSkuIndexRpc(string hostname, string username, string password) {
+	public SkuIndexRequest(string hostname, string username, string password) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
 			UserName = username,
