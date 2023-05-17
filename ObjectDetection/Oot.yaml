@@ -1,20 +1,14 @@
-path: DatasetOOT_V2  # dataset root dir
+path: Dataset_OOT_V3  # dataset root dir
 train: Training  # train images (relative to 'path')
 val: Validation  # val images (relative to 'path')
-#test:  Test # test images (optional)
+test: Test # test images (optional)
 
 # Classes
-nc: 5
+nc: 4
 names: 
-#  0: 'keto granola'   #8719992763139
-#  1: 'pumpkin spice'  #8719992763351
-#  2: 'koffie keto'    #8719992763917
-#  3: 'Chia Spice'     #8719992763078
-#  4: "Crunchy Nuts"   #8719992763016
-#  5: 'Paleo Mix'      #8719992763108
   0: 'keto granola'   #8719992763139
   1: 'pumpkin spice'  #8719992763351
-  2: 'Cacao Buchweiten'    #8719992763917
-  3: 'pumpkin Spice DE'     #8719992763078
-  4: "Paleo Mix"   #8719992763016
+  2: 'koffie keto'    #8719992763917
+  3: 'Chia Spice'     #8719992763078
+#  4: "Crunchy Nuts"   #8719992763016
 #  5: 'Paleo Mix'      #8719992763108

@@ -3,7 +3,8 @@ if __name__ == '__main__':
     import os
     import torch
 
-    # os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+    os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
     torch.cuda.empty_cache()
 
     # Load the model.
@@ -19,7 +20,8 @@ if __name__ == '__main__':
         name='oot_model',
         device=0,  # GPU
         save_period=-1,  # No saves inbetween training,
-        patience=100
+        patience=100,
+        verbose=True,
     )
 
 # all arguments https://docs.ultralytics.com/modes/train/#arguments
