@@ -45,12 +45,12 @@ import os
 # %matplotlib inline
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 # Load a model
-model = YOLO('MontaOrderVerification/oot_model11/weights/best.pt')  # load a custom model
+model = YOLO('MontaOrderVerification/oot_model/weights/best.pt')  # load a custom model
 
 folder_path = '../Datasets/Dataset_OOT_V3/Test/'
 for files in os.listdir(folder_path):
     # Predict with the model
-    results = model.predict(os.path.join(folder_path, files),device='cpu', conf=0.75)
+    results = model.predict(os.path.join(folder_path, files))
 
     res_plotted = results[0].plot()
 
