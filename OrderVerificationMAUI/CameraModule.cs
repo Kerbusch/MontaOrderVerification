@@ -56,6 +56,7 @@ namespace OrderVerificationMAUI
         }
 
         // makes all the pixels around the object transparent
+
         public static Mat makeBackgroundTransparent(Mat original) {
             Mat input = new();
             OpenCvSharp.Size s = new OpenCvSharp.Size(3, 3);

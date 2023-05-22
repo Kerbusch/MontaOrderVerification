@@ -85,8 +85,7 @@ public partial class CapturePicture : ContentPage
             }
         }
 
-        if (picture >= (total_pictures - 1))
-        {
+        if (picture >= (total_pictures - 1)) { 
             if (button_next_picture.Text == "Take next picture") {
                 button_next_picture.Text = "Finish this sku";
             }
@@ -126,7 +125,7 @@ public partial class CapturePicture : ContentPage
     // Sends picture with rabbitmq to the server, returns false if failed
     private bool sendPicture(OpenCvSharp.Mat picture)
     {
-        _setToRabbitMq.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), "Oat", picture);
+        _send_to_RabbitMQ.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), "OOT", picture);
         return true;
     }
 
