@@ -30,7 +30,7 @@ namespace DatasetImageProcessing
             return new_mat;
         }
 
-        // Function to change background pixels to alpha (transparent)
+        // Function to change background pixels to alpha (transparent) and thus return a image with a transparent background
         public Mat getAlphaMat(Mat image)
         {
             Mat input = new();

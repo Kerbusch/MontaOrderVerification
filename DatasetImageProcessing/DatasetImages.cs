@@ -4,14 +4,11 @@ using System.Drawing;
 
 namespace DatasetImageProcessing
 {
+    //DatasetImages class for going through the whole process for processing a dataset image. See: saveImageToDatasetAndChangeColor
     public class DatasetImages{
-        //dataset path
-        private string _dataset_path; // "/dataset_folder" not "/dataset_folder/vendor/sku"
-        //image processing
+        private string _dataset_path; // "/dataset_folder/" not "/dataset_folder/vendor/sku"
         private ImageProcessing _image_processing = new ImageProcessing();
-        //image index
         public ImageIndex _image_index { get; }
-        //colors
         private Color[] _colors = {
             Color.Black,
             Color.White,
@@ -25,14 +22,13 @@ namespace DatasetImageProcessing
             Color.FromArgb(255, 210, 184, 87)
         };
 
-        // Constructor
+        // Constructor that sets the _dataset_path and throws exceptions accordingly
         public DatasetImages(string dataset_path) {
-            //todo: set path member
             _dataset_path = dataset_path;
-            if (_dataset_path == null) {
-                throw new Exception("no dataset path");
+            if (_dataset_path == null || !(_dataset_path != null && Directory.Exists(_dataset_path))) {
+                throw new ArgumentException("no dataset path");
             }
-            
+
             //set _image_index
             _image_index = new ImageIndex(_dataset_path);
         }
@@ -42,9 +38,10 @@ namespace DatasetImageProcessing
             return new ImageIndex(_dataset_path);
         }
 
+        //Run the whole process for 1 dataset image. This wil generate a bounding box and multiple images with different backgrounds.
+        //These will be saves to the dataset folder in the vendor and sku folders and with a index file. These folders and index file
+        //will be generated if they do not exist
         public void saveImageToDatasetAndChangeColor(long sku, string vendor, Mat image) {
-            Debug.WriteLine("start image: " + DateTime.Now);
-
             //check if sku is in yolo indexes dictionary
             var yolo_label = new YoloLabel();
             if (!yolo_label.checkSkuIndexKnown(sku)) {
@@ -96,14 +93,6 @@ namespace DatasetImageProcessing
                 //write the bounding box file
                 ImageLabeling.createLabelFile(bounding_box, new_image, sku, path, image_filename);
             }
-            Debug.WriteLine("stop time: " + DateTime.Now);
-        }
-        
-
-        // 
-        public string getSkuFolderPath(long sku, string vendor) {
-            throw new NotImplementedException();
-            return string.Empty;
         }
     }
 }

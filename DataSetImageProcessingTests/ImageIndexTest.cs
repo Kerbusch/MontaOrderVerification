@@ -17,6 +17,34 @@ public class TestImageIndex {
 		_dataset_images = new DatasetImages(_dataset_path);
 		_image_index = _dataset_images.getNewImageIndex();
 	}
+	
+	[Test] //test constructor
+	public void constructorNoPathTest() {
+		//no path
+		Assert.Throws<ArgumentException>(
+			delegate { new ImageIndex(null); });
+	}
+	
+	[Test] //test constructor
+	public void constructorWrongFolderPathTest() {
+		//wrong path to non existent folder
+		Assert.Throws<ArgumentException>(
+			delegate { new ImageIndex(_dataset_path + "folder\\"); });
+	}
+	
+	[Test] //test constructor
+	public void constructorWrongFolderPathToFileTest() {
+		//wrong path to file
+		Assert.Throws<ArgumentException>(
+			delegate { new ImageIndex(_dataset_path + "item.txt"); });
+	}
+	
+	[Test] //test constructor
+	public void constructorRightPathTest() {
+		//right path
+		Assert.DoesNotThrow(
+			delegate { new ImageIndex(_dataset_path); });
+	}
 
 	[Test]
 	public void getSkuIndexTest() {

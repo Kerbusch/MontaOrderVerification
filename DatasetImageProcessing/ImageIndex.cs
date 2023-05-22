@@ -7,14 +7,20 @@ public class ImageIndex {
 	private string _dataset_path; // "/dataset_folder" not "/dataset_folder/vendor/sku"
 	private const string _sku_indexes_filename = "sku_indexes.json";
 
+	// Constructor that sets the _dataset_path and throws exceptions accordingly
 	public ImageIndex(string dataset_path) {
 		_dataset_path = dataset_path;
+		if (_dataset_path == null || !(_dataset_path != null && Directory.Exists(_dataset_path))) {
+			throw new ArgumentException("no dataset path");
+		}
 	}
 
+	//get the _sku_indexes_filename the sku indexes filename const
 	public string getSkuIndexesFileName() {
 		return _sku_indexes_filename;
 	}
 
+	//get the sku index from the file
 	public int getSkuIndex(long sku, string vendor) {
 		return getSkuIndex(sku, vendor, false);
 	}
@@ -24,6 +30,7 @@ public class ImageIndex {
 		return getSkuIndex(sku, vendor, true);
 	}
 
+	//get the sku index from the file
 	private int getSkuIndex(long sku, string vendor, bool increment) {
 		//check if sku indexes file exist if not create
 		createSkuIndexesFileIfNotExist(vendor);
@@ -56,14 +63,17 @@ public class ImageIndex {
 		return output;
 	}
 	
+	//check if vendor folder exist in the dataset path	
 	private bool checkVendorDirExist(string vendor) {
 		return Directory.Exists(path: _dataset_path + vendor + "\\");
 	}
 	
+	//check if vendor sku exist in the dataset path	
 	private bool checkSkuDirExist(long sku, string vendor) {
 		return Directory.Exists(path: _dataset_path + vendor + "\\" + sku + "\\");
 	}
 
+	//check if vendor folder exist in the dataset path and if not create the folder
 	private void createVendorDirIfNotExist(string vendor) {
 		if (!checkVendorDirExist(vendor)) {
 			Debug.WriteLine("creating vendor dir");
@@ -74,6 +84,7 @@ public class ImageIndex {
 		}
 	}
 
+	//check if sku folder exist in the dataset path and if not create the folder
 	private void createSkuIndexesFileIfNotExist(string vendor) {
 		createVendorDirIfNotExist(vendor);
 
@@ -85,7 +96,7 @@ public class ImageIndex {
 		}
 	}
 	
-	//write the sku indexes json file from the member
+	//write the sku indexes to a json file json file
 	private void writeJsonFile(string file_path, Dictionary<long, int> sku_indexes) {
 		//create json serializer options
 		var json_serializer_options = new JsonSerializerOptions();
@@ -98,7 +109,7 @@ public class ImageIndex {
 		File.WriteAllText(file_path, json_string);
 	}
 	
-	//read the sku indexes json file and set the member
+	//read the sku indexes from a json file
 	private Dictionary<long, int> readJsonFile(string file_path) {
         //get string from file
         string json_string = "";
