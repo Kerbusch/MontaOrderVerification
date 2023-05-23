@@ -1,7 +1,6 @@
 namespace DataSetImageProcessingTests;
 
 public class TestImageIndex {
-	// private string _dataset_path = "C:\\Users\\daank\\RiderProjects\\MontaOrderVerification\\DataSetImageProcessingTests\\DatasetTestDir\\";
 	private string _dataset_path = "../../../DatasetTestDir/";
 	private DatasetImages _dataset_images;
 	private ImageIndex _image_index;
