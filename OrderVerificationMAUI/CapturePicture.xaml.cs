@@ -14,7 +14,7 @@ public partial class CapturePicture : ContentPage
     int total_pictures = 50;
     int last_number;
     Mat last_picture;
-    private DataSendImageToServer _send_to_RabbitMQ;
+    private DataSetImageSender _setToRabbitMq;
 
     // Constuctor
     public CapturePicture(string new_sku_number, string new_vendor)

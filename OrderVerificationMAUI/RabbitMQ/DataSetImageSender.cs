@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 namespace RabbitMQ; 
 
 //Class for sending images to the dataset using a simple RabbitMQ queue
-public class DataSendImageToServer : IDisposable {
+public class DataSetImageSender : IDisposable {
 	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
 	//In a future version this this should be in a configuration or definition file.
 	private const string _exchange_name = "ai_server";
@@ -23,7 +23,7 @@ public class DataSendImageToServer : IDisposable {
 	}
 
 	//Constructor that creates the connection to the RabbitMQ server
-	public DataSendImageToServer(string hostname, string username, string password) {
+	public DataSetImageSender(string hostname, string username, string password) {
 		
 		var factory = new ConnectionFactory {
 			HostName = hostname,
@@ -82,8 +82,6 @@ public class DataSendImageToServer : IDisposable {
 			basicProperties: properties,
 			body: json_string_bytes
 		);
-		
-		Console.WriteLine("publish done");
 	}
 
 	//When this class is deleted this function is called

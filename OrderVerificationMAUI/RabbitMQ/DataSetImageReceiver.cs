@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using OpenCvSharp;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -6,7 +7,7 @@ using RabbitMQ.Client.Events;
 namespace RabbitMQ; 
 
 //Class for receiving the dataset images from the queue
-public class DataSetImageReceiverRpc : IDisposable {
+public class DataSetImageReceiver : IDisposable {
 	//RabbitMQ exchange name and routing key. If this changes the code also had to be changed.
 	//In a future version this this should be in a configuration or definition file.
 	private const string _queue_name = "dataset_images";
@@ -16,7 +17,9 @@ public class DataSetImageReceiverRpc : IDisposable {
 	private readonly IModel _channel;
     
 	private EventingBasicConsumer _consumer;
-	
+
+	private Action<long, string, Mat> _function;
+
 	//Struct for json deserializing
 	private struct _ReceiveStruct {
 		public long sku { get; set; }
@@ -25,13 +28,16 @@ public class DataSetImageReceiverRpc : IDisposable {
 	}
 
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
-	public DataSetImageReceiverRpc(string hostname, string username, string password) {
+	public DataSetImageReceiver(string hostname, string username, string password, Action<long, string, Mat> function) {
 		//setup connection factory
 		_connectionFactory = new ConnectionFactory {
 			HostName = hostname,
 			UserName = username,
 			Password = password
 		};
+		
+		//save function to member
+		_function = function;
 		
 		//create connection and channel
 		_connection = _connectionFactory.CreateConnection(); //todo: add try expect
@@ -66,19 +72,19 @@ public class DataSetImageReceiverRpc : IDisposable {
 			//Deserialize body to _ReceiveStruct
 			_ReceiveStruct received = JsonSerializer.Deserialize<_ReceiveStruct>(body);
 
-			Console.WriteLine("sku: {0}", received.sku);
-			Console.WriteLine("vendor: {0}", received.vendor);
-
 			//convert byte array to image
 			Mat imageMat = Cv2.ImDecode(received.image_data, ImreadModes.AnyColor);
-
-			//Temp write image file
-			Cv2.ImWrite("../../../gotten_image.png", imageMat);
-			Console.WriteLine("writen image to gotten_image.png");
+			
+			//call member function
+			_function(received.sku, received.vendor, imageMat);
+			
 		}
 		catch (Exception exception) { 
 			//Write exception
-			Console.WriteLine($" [.] {exception.Message}");
+			Debug.WriteLine($" [.] {exception.Message}");
+			
+			//_channel.BasicAck(deliveryTag: basic_deliver_event_args.DeliveryTag, multiple: false);
+			throw exception;
 		}
 		finally {
 			//Acknowledge delivery

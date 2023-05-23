@@ -14,6 +14,8 @@ public class SkuIndexReceiver : IDisposable {
 	private readonly IModel _channel;
 	private EventingBasicConsumer _consumer;
 
+	private Func<long, string, int> _function;
+
 	//Struct for json deserializing
 	private struct _ReceiveStruct {
 		public long sku { get; set; }
@@ -21,12 +23,15 @@ public class SkuIndexReceiver : IDisposable {
 	}
 
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
-	public SkuIndexReceiver(string hostname, string username, string password) {
+	public SkuIndexReceiver(string hostname, string username, string password,Func<long, string, int> function ) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
 			UserName = username,
 			Password = password
 		};
+		
+		//save function to member
+		_function = function;
 
 		//create connection and channel
 		_connection = factory.CreateConnection(); //todo: add try expect
@@ -71,18 +76,13 @@ public class SkuIndexReceiver : IDisposable {
 		var props = basic_deliver_event_args.BasicProperties;
 		var replyProps = _channel.CreateBasicProperties();
 		replyProps.CorrelationId = props.CorrelationId;
+		replyProps.ContentType = "application/json";
 
 		try {
 			//Deserialize body to _ReceiveStruct
 			_ReceiveStruct received = JsonSerializer.Deserialize<_ReceiveStruct>(body);
 
-			Console.WriteLine("Index request ->");
-			Console.WriteLine("sku: {0}", received.sku);
-			Console.WriteLine("vendor: {0}", received.vendor);
-
-			//TODO: add magic
-
-			response = 0; // = magic
+			response = _function(received.sku, received.vendor);
 		}
 		catch (Exception exception) {
 			Console.WriteLine($" [.] {exception.Message}");

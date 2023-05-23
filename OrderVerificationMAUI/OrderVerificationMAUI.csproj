@@ -72,16 +72,16 @@
 	  <Compile Update="RabbitMQ\obj\Debug\net6.0\RabbitMQ.GlobalUsings.g.cs">
 	    <Link>Comunication\obj\Debug\net6.0\RabbitMQ.GlobalUsings.g.cs</Link>
 	  </Compile>
-	  <Compile Update="RabbitMQ\DataGetSkuIndexRpc.cs">
+	  <Compile Update="RabbitMQ\SkuIndexRequest.cs">
 	    <Link>RabbitMQ\DataGetSkuIndexRpc.cs</Link>
 	  </Compile>
-	  <Compile Update="RabbitMQ\DataSendImageToServer.cs">
+	  <Compile Update="RabbitMQ\DataSetImageSender.cs">
 	    <Link>RabbitMQ\DataSendImageToServer.cs</Link>
 	  </Compile>
-	  <Compile Update="RabbitMQ\DataSetImageReceiverRpc.cs">
+	  <Compile Update="RabbitMQ\DataSetImageReceiver.cs">
 	    <Link>RabbitMQ\DataSetImageReceiverRpc.cs</Link>
 	  </Compile>
-	  <Compile Update="RabbitMQ\SkuFromImageRpc.cs">
+	  <Compile Update="RabbitMQ\SkuFromImageRPC.cs">
 	    <Link>RabbitMQ\SkuFromImageRpc.cs</Link>
 	  </Compile>
 	  <Compile Update="RabbitMQ\SkuIndexReceiver.cs">

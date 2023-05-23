@@ -11,6 +11,8 @@ public class OutboundProcess : IDisposable {
 
 	//Constructor that takes the hostname, username and password for the rabbitmq receiver.
 	public OutboundProcess(string hostname, string username, string password) {
+		Console.WriteLine("Starting camera...");
+		
 		//start rabbitmq
 		_rabbitmq_sku_from_image = new SkuFromImageRpc(hostname, username, password);
 		
@@ -21,17 +23,27 @@ public class OutboundProcess : IDisposable {
 
 	//Get the order id from the console using Console.Readline.
 	private uint getOrderIdFromConsole() {
-		
+
 		Console.WriteLine("Place the order underneath the camera and enter the order id to check the order completeness");
 		Console.WriteLine("This takes a picture that will be checked by the AI");
-		Console.WriteLine("Enter order id: ");
 
-		//Get in
-		uint order_id = Convert.ToUInt32(Console.ReadLine());
+		while (true) {
+			Console.WriteLine("Enter order id: ");
+
+			//Get in
+			uint order_id = Convert.ToUInt32(Console.ReadLine());
+			
+			//check if order is in database
+			if (_order_data.tryGetOrder(order_id, out Order _)) {
+				return order_id;
+			}
+			
+			//else order doesn't exist
+			Console.WriteLine("Order doesn't exists.");
+			Console.WriteLine("Please enter a valid order id.");
+			Console.WriteLine("");
+		}
 		
-		//TODO: check order_id
-		
-		return order_id;
 	}
 	
 	//Get image from opencvsharp4 using the _capture member.
