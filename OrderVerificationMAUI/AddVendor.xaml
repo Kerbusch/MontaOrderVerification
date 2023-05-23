@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="OrderVerificationMAUI.AddVendor"
+             Title="AddVendor">
+
+
+    <Grid BackgroundColor="#FFFFBF">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid
+            Grid.Column="1"
+            Grid.Row="0"
+            RowSpacing="10"
+            ColumnSpacing="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="1"
+                Text="Write the name of the company:"
+                HorizontalOptions="Center"
+                FontSize="Header"/>
+
+            <BoxView
+                Grid.Row="2"
+                CornerRadius="10"
+                Color="#FFFF7a" />
+            <Entry
+                x:Name="vendor_entry"
+                Grid.Row="2"
+                Text=""
+                HorizontalTextAlignment="Center"
+                FontSize="Large"/>
+
+
+            <Grid
+                Grid.Row="3">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                x:Name="button_add_vendor"
+                Grid.Column="1"
+                Text="Make pictures"
+                Clicked="clickedAddVendor"
+                FontSize="Large"
+                CornerRadius="10"
+                BorderWidth="3"
+                TextColor="Black"
+                BorderColor="Black"
+                BackgroundColor="#FFFF7a"/>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
