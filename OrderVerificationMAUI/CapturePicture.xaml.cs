@@ -4,6 +4,7 @@ namespace OrderVerificationMAUI;
 
 public partial class CapturePicture : ContentPage
 {
+    string vendor;
     string sku_number;
     string path;
     string picture_path = "Trainedmodel\\DatasetOOT\\Training\\";
@@ -13,16 +14,20 @@ public partial class CapturePicture : ContentPage
     int last_number;
 
     // Constuctor
-    public CapturePicture(string new_sku_number)
+    public CapturePicture(string new_sku_number, string new_vendor)
 	{
         InitializeComponent();
-        if (new_sku_number == "")
-        {
-            Sku_label.Text = "No sku number provided";
+
+        if (new_vendor == "") {
+            new_vendor = "No_vendor_provided";
+        }
+        vendor = new_vendor;
+
+        if (new_sku_number == "") {
+            Sku_label.Text = vendor + ": No sku number provided";
             sku_number = "No_sku_number_provided";
         }
-        else
-        {
+        else {
             sku_number = new_sku_number;
         }
 
@@ -32,12 +37,12 @@ public partial class CapturePicture : ContentPage
         if (Directory.Exists(path + picture_path + sku_number))
         {
             last_number = previousNumbers();
-            Sku_label.Text = sku_number + " (" + (last_number + 1) + ") ";
+            Sku_label.Text = vendor + ": " + sku_number + " (" + (last_number + 1) + ") ";
         }
         else
         {
             Directory.CreateDirectory(path + picture_path + sku_number);
-            Sku_label.Text = sku_number + " (1) ";
+            Sku_label.Text = vendor + ": " + sku_number + " (1) ";
         }
     }
 
@@ -106,7 +111,7 @@ public partial class CapturePicture : ContentPage
 
         picture++;
         picture_counter.Text = (total_pictures - picture).ToString();
-        Sku_label.Text = sku_number + " (" + (picture + last_number + 1) + ") ";
+        Sku_label.Text = vendor + ": " + sku_number + " (" + (picture + last_number + 1) + ") ";
     }
 
     // Replaces the last made picture with a new picture and displays the new picture on the screen 
