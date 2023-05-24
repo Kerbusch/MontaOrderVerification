@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace DatasetImageProcessing
@@ -14,7 +15,7 @@ namespace DatasetImageProcessing
             {
                 for (int x = 0; x < alpha_image.Cols; ++x)
                 {
-                    if (alpha_image.At<Vec4b>(y, x)[3] == 0)
+                    if (alpha_image.At<Vec4b>(y, x)[3] < 255)
                     {
                         new_mat.At<Vec4b>(y, x)[0] = color.B;
                         new_mat.At<Vec4b>(y, x)[1] = color.G;
@@ -55,7 +56,7 @@ namespace DatasetImageProcessing
         }
         
         // binary image with white lines will get filled with white pixels
-        private static Mat fillOutlines(Mat input) 
+        private Mat fillOutlines(Mat input) 
         {
             for (int y = 0; y < input.Rows; y++)
             {
@@ -98,7 +99,7 @@ namespace DatasetImageProcessing
         }
         
         //original image will get a transparant background (alpha to 0). 
-        public static Mat makeBackgroundTransparent(Mat original)
+        public Mat makeBackgroundTransparent(Mat original)
         {
             if (original.Empty()) throw new ArgumentNullException(paramName: nameof(original), message: "makeBackgroundTransparent Mat original is empty");
 
@@ -114,7 +115,7 @@ namespace DatasetImageProcessing
             {
                 _gaussian_size -= 1;
             }
-            Size s = new(_gaussian_size, _gaussian_size);
+            OpenCvSharp.Size s = new(_gaussian_size, _gaussian_size);
             Cv2.GaussianBlur(alpha, _image_gaussian, s, 0);
 
             //increase contrast and brightness for better canny edge detection
@@ -150,6 +151,17 @@ namespace DatasetImageProcessing
 
             //return the final image with transparent background
             return dst;
+        }
+
+        public static void showMat(Mat img, string name)
+        {
+            string windowName = $"{name} Image Window";
+            Cv2.NamedWindow(windowName, WindowFlags.FullScreen);
+
+            while (Cv2.WaitKey(1) == -1)
+            {
+                Cv2.ImShow(windowName, img);
+            }
         }
 
     }
