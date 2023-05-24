@@ -8,70 +8,54 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-# manual inputting the skus from the image.
-def manualGetSkusFromImage(image: np.ndarray) -> list[int]:
-    print("input skus for this image.")
-    # show image
-    cv2.imshow('received image', image)
-    cv2.waitKey(1)
 
-    # get skus from commandline
-    # wait till empty enter
+class ObjectDetectionModel:
+    def __init__(self):
+        self.model = self.loadObjectDetectionModel()
+        self.names = self.model.names
+        print("ObjectDetectionModel loaded")
 
-    output_list = []
-
-    done = False
-    while not done:
-        x = input(":")
-        if x == "":
-            done = True
-        elif x == "crash":
+    def loadObjectDetectionModel(self):
+        try:
+            print("Loading model")
+            return YOLO(
+                '../ObjectDetection/MontaOrderVerification/oot_model12/weights/best.pt')  # load the custom model
+        except:
+            print("could not load model")
             exit(200)
-        else:
-            try:
-                y = int(x)
-                # check if input is smaller than c# long
-                if y < 9223372036854775807:
-                    output_list.append(y)
+
+
+    def getSkusFromImage(self, image: np.ndarray) -> list[int]:
+        print("Getting skus from image")
+        results = self.model.predict(source=image, conf=0.45)
+
+        skus = []
+        for result in results:
+            for c in result.boxes.cls:
+                if self.names[int(c)] == "keto granola":
+                    skus.append(8719992763139)
+                elif self.names[int(c)] == "pumpkin spice":
+                    skus.append(8719992763351)
+                elif self.names[int(c)] == "koffie keto":
+                    skus.append(8719992763917)
+                elif self.names[int(c)] == "Chia Spice":
+                    skus.append(8719992763078)
                 else:
-                    print("value to big for a c# long")
-            except ValueError:
-                print("cant convert input to int, retry")
+                    skus.append(self.names[int(c)])
+        print(skus)
+        return skus
 
-    print("send: {}".format(output_list))
-    print("\n\n\n\n\n\n")
-
-    # close image
-    cv2.destroyAllWindows()
-    return output_list
-
-
-# debug function that will be replaced by the sku recognition AI.
-def getSkusFromImage(image: np.ndarray) -> list[int]:
-
-    model = loadObjectDetectionModel()
-    names = model.names
-
-    results = model.predict(source=image, conf=0.45)
-
-    skus = []
-    for result in results:
-        for c in result.boxes.cls:
-            skus.append(names[int(c)])
-
-    return skus
-
-def loadObjectDetectionModel():
-    model = YOLO('../ObjectDetection/MontaOrderVerification/oot_model12/weights/best.pt')  # load the custom model
-    return model
 
 # class test function
 if __name__ == '__main__':
+    print("Running test")
     image = cv2.imread('../Datasets/Dataset_OOT_V3_640/Test/test (5).jpg')
+
+    ObjectDetector = ObjectDetectionModel()
 
     receiver = receive_rpc.RabbitMQReceiver(
         "20.13.19.141",
         "python_test_user",
         "jedis",
-        getSkusFromImage(image))
+        ObjectDetector.getSkusFromImage)
     receiver.run()
