@@ -85,7 +85,7 @@ namespace DatasetImageProcessing
                 string image_filename = + index + "_" + color.Name + ".png";
                 
                 //create new image with the changed background
-                Mat new_image = _image_processing.changeColor(image, alpha_image, color);
+                Mat new_image = _image_processing.changeColor(alpha_image, color);
 
                 //write the new image to a file
                 Cv2.ImWrite(path + image_filename, new_image);

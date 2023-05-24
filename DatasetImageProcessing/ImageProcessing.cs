@@ -8,7 +8,7 @@ namespace DatasetImageProcessing
     public class ImageProcessing
     {
         // Function to change background color to the given RGB color
-        public Mat changeColor(Mat org_image, Mat alpha_image, Color color)
+        public Mat changeColor(Mat alpha_image, Color color)
         {
             Mat new_mat = alpha_image.Clone();
             for (int y = 0; y < alpha_image.Rows; ++y)
@@ -23,7 +23,33 @@ namespace DatasetImageProcessing
                     }
                     else
                     {
-                        new_mat.At<Vec4b>(y, x) = org_image.At<Vec4b>(y, x);
+                        new_mat.At<Vec4b>(y, x) = alpha_image.At<Vec4b>(y, x);
+                    }
+                }
+            }
+
+            return new_mat;
+        }
+
+        public Mat changeBackgroundImage(Mat bg_image, Mat alpha_image)
+        {
+            //need to fix resize bg_image
+            if(bg_image.Size() != alpha_image.Size())
+            {
+                bg_image.Resize(alpha_image.Size());
+            }
+            Mat new_mat = alpha_image.Clone();
+            for (int y = 0; y < alpha_image.Rows; ++y)
+            {
+                for (int x = 0; x < alpha_image.Cols; ++x)
+                {
+                    if (alpha_image.At<Vec4b>(y, x)[3] < 255)
+                    {
+                        new_mat.At<Vec4b>(y, x) = bg_image.At<Vec4b>(y, x);
+                    }
+                    else
+                    {
+                        new_mat.At<Vec4b>(y, x) = alpha_image.At<Vec4b>(y, x);
                     }
                 }
             }
