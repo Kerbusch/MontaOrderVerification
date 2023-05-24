@@ -14,14 +14,17 @@ if __name__ == '__main__':
     results = model.train(
         data='Oot.yaml',
         imgsz=640,
-        epochs=500,
-        batch=24,  # -1 autobatch
+        epochs=800,
+        batch=22,  # -1 autobatch // 26
         project="MontaOrderVerification",
         name='oot_model',
         device=0,  # GPU
         save_period=-1,  # No saves inbetween training,
-        patience=100,
-        verbose=True,
+        patience=200,
+        mode='train',
+        augment=True
     )
+
+    # validation = model.val()
 
 # all arguments https://docs.ultralytics.com/modes/train/#arguments
