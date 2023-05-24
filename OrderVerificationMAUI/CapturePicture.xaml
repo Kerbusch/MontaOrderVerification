@@ -35,7 +35,7 @@
             <Image 
                 x:Name="last_image"
                 Grid.Row="1" 
-                Source="C:\\Users\\jarno\\OneDrive\\Documenten\\MontaOrderVerification\\OrderVerificationMAUI\\missing_first_picture.jpg"
+                Source=""
                 Aspect="AspectFit"/>
 
         </Grid>
