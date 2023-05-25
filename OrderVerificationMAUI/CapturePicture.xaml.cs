@@ -7,7 +7,7 @@ namespace OrderVerificationMAUI;
 public partial class CapturePicture : ContentPage
 {
     string vendor;
-    string sku_number;
+    long sku_number;
     string last_picture_path;
     int picture = 0;
     int total_pictures = 3;
@@ -22,22 +22,13 @@ public partial class CapturePicture : ContentPage
         _get_sku_index = new SkuIndexRequest("20.13.19.141", "python_test_user", "jedis");
         InitializeComponent();
 
-        if (new_vendor == "") {
-            new_vendor = "No_vendor_provided";
-        }
         vendor = new_vendor;
-
-        if (new_sku_number == "") {
-            Sku_label.Text = vendor + ": No sku number provided";
-            sku_number = "No_sku_number_provided";
-        }
-        else {
-            sku_number = new_sku_number;
-        }
+        sku_number = (long)Convert.ToDouble(new_sku_number);
 
         picture_counter.Text = (total_pictures - picture).ToString();
         Sku_label.Text = sku_number + " (" + (getPreviousSkuIndex() + 1) + ") ";
-        last_picture_path = getPath();
+        GeneralFunctions generalFunctions = new GeneralFunctions();
+        last_picture_path = generalFunctions.getPath("OrderVerificationMAUI");
         last_image.Source = last_picture_path + "\\missing_first_picture.jpg";
         Directory.CreateDirectory(last_picture_path + "\\trash");
     }
@@ -46,21 +37,6 @@ public partial class CapturePicture : ContentPage
     ~CapturePicture()
     {
         Directory.Delete(last_picture_path + "\\trash", true);
-    }
-
-    // Returns the base path of the repo directory
-    private string getPath()
-    {
-        string path = Path.GetDirectoryName(AppContext.BaseDirectory);
-        string[] paths = path.Split('\\');
-        path = "";
-        for (int i = 0; i < paths.Length; i++) {
-            path += paths[i] + "\\";
-            if (paths[i] == "OrderVerificationMAUI") {
-                break;
-            }
-        }
-        return path;
     }
 
     // Makes the next picture and displays it on the screen
@@ -116,13 +92,13 @@ public partial class CapturePicture : ContentPage
     // Sends picture with rabbitmq to the server, returns false if failed
     private bool sendPicture(OpenCvSharp.Mat picture)
     {
-        _send_to_RabbitMQ.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), vendor, picture);
+        _send_to_RabbitMQ.sendToDataSetImageToServer(sku_number, vendor, picture);
         return true; //hardcoded for now. Maby add later if server doesn't respond, return false
     }
 
     // gets the last used number of the given sku from rabbitmq
     private int getPreviousSkuIndex()
     {
-        return _get_sku_index.getSkuIndex((long)Convert.ToDouble(sku_number), vendor).Result;
+        return _get_sku_index.getSkuIndex(sku_number, vendor).Result;
     }
 }
