@@ -18,7 +18,7 @@ public class OutboundProcess : IDisposable {
 		
 		//start the video capture so that it's ready to take pictures
 		_capture = new VideoCapture();
-		_capture.Open(0); // Use 0 for the default camera or specify a different index for multiple cameras
+		_capture.Open(2); // Use 0 for the default camera or specify a different index for multiple cameras
 	}
 
 	//Get the order id from the console using Console.Readline.
