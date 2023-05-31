@@ -1,10 +1,12 @@
 using OpenCvSharp;
 using System.Diagnostics;
+using RabbitMQ;
 
 namespace OrderVerificationMAUI;
 
 public partial class CapturePicture : ContentPage
 {
+    string vendor;
     string sku_number;
     string path;
     string picture_path;
@@ -12,13 +14,21 @@ public partial class CapturePicture : ContentPage
     int total_pictures = 50;
     int last_number;
     Mat last_picture;
+    private DataSetImageSender _setToRabbitMq;
 
     // Constuctor
-    public CapturePicture(string new_sku_number)
-    {
+    public CapturePicture(string new_sku_number, string new_vendor)
+	{
+        _send_to_RabbitMQ = new DataSendImageToServer("20.13.19.141", "python_test_user", "jedis");
         InitializeComponent();
+
+        if (new_vendor == "") {
+            new_vendor = "No_vendor_provided";
+        }
+        vendor = new_vendor;
+
         if (new_sku_number == "") {
-            Sku_label.Text = "No sku number provided";
+            Sku_label.Text = vendor + ": No sku number provided";
             sku_number = "No_sku_number_provided";
         }
         else {
@@ -28,7 +38,6 @@ public partial class CapturePicture : ContentPage
         path = getPath();
         picture_path = path + "last_picture.jpg";
         picture_counter.Text = (total_pictures - picture).ToString();
-
         last_number = getPreviousNumbers(sku_number);
         Sku_label.Text = sku_number + " (" + (last_number + 1) + ") ";
     }
@@ -81,8 +90,7 @@ public partial class CapturePicture : ContentPage
             }
         }
 
-        if (picture >= (total_pictures - 1))
-        {
+        if (picture >= (total_pictures - 1)) { 
             if (button_next_picture.Text == "Take next picture") {
                 button_next_picture.Text = "Finish this sku";
             }
@@ -102,7 +110,7 @@ public partial class CapturePicture : ContentPage
 
         picture++;
         picture_counter.Text = (total_pictures - picture).ToString();
-        Sku_label.Text = sku_number + " (" + (picture + last_number + 1) + ") ";
+        Sku_label.Text = vendor + ": " + sku_number + " (" + (picture + last_number + 1) + ") ";
     }
 
     // Replaces the last made picture with a new picture and displays the new picture on the screen 
@@ -122,6 +130,7 @@ public partial class CapturePicture : ContentPage
     // Sends picture with rabbitmq to the server, returns false if failed
     private bool sendPicture(OpenCvSharp.Mat picture)
     {
+        _send_to_RabbitMQ.sendToDataSetImageToServer((long)Convert.ToDouble(sku_number), "OOT", picture);
         return true;
     }
 
