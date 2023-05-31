@@ -1,12 +1,8 @@
 import cv2
 from ultralytics import YOLO
 
-# Load the YOLOv8 model
-model = YOLO('MontaOrderVerification/oot_model22/weights/best.pt')  # load a custom model
-
-# Open the video file
-# video_path = "path/to/your/video/file.mp4"
-# cap = cv2.VideoCapture(video_path)
+# Load the custom model
+model = YOLO('MontaOrderVerification/Best_oot_model/weights/Best_oot_model.pt')  # load a custom model
 
 cap = cv2.VideoCapture(1)
 

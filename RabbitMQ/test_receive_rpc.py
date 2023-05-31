@@ -19,7 +19,7 @@ class ObjectDetectionModel:
         try:
             print("Loading model")
             return YOLO(
-                '../ObjectDetection/MontaOrderVerification/oot_model12/weights/best.pt')  # load the custom model
+                '../ObjectDetection/MontaOrderVerification/Best_oot_model/weights/Best_oot_model.pt')  # load the custom model
         except:
             print("could not load model")
             exit(200)

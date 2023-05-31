@@ -1,0 +1,16 @@
+path: Dataset_OOT_V4_640  # dataset root dir
+train: Training  # train images (relative to 'path')
+val: Validation  # val images (relative to 'path')
+#test: Test # test images (optional)
+
+# Classes
+nc: 4
+names:
+  0: 'keto granola'   #8719992763139
+  1: 'pumpkin spice'  #8719992763351
+  2: 'koffie keto'    #8719992763917
+  3: 'Chia Spice'     #8719992763078
+#  4: "Crunchy Nuts"   #8719992763016
+#  5: 'Paleo Mix'      #8719992763108
+
+
