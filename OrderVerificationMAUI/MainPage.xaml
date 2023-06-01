@@ -202,7 +202,7 @@
             <Button
                 Grid.Row="3"
                 Grid.Column="2"
-                Text="back"
+                Text="&lt;"
                 Clicked="clickedBack"
                 FontSize="Large"
                 CornerRadius="10"

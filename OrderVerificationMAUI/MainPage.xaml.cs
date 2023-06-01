@@ -79,8 +79,7 @@ public partial class MainPage : ContentPage
     // Delete the last char of the text box
     private void clickedBack(object sender, EventArgs e)
     {
-        if (sku_entry.Text != "")
-        {
+        if (sku_entry.Text != "") {
             sku_entry.Text = sku_entry.Text.Remove(sku_entry.Text.Length - 1);
         }
     }
@@ -88,8 +87,10 @@ public partial class MainPage : ContentPage
     // Save the text box input and go to the next page 
     private async void clickedEnter(object sender, EventArgs e)
     {
-        sku_number = sku_entry.Text;
-        await Navigation.PushAsync(new SelectCompany(sku_number));
+        if (sku_entry.Text != "") {
+            sku_number = sku_entry.Text;
+            await Navigation.PushAsync(new SelectCompany(sku_number));
+        }
     }
 }
 
