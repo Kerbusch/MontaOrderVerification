@@ -33,10 +33,17 @@ namespace DatasetImageProcessing
 
         public Mat changeBackgroundImage(Mat bg_image, Mat alpha_image)
         {
+            if (bg_image.Empty() || alpha_image.Empty()) throw new ArgumentNullException(paramName: nameof(bg_image), message: "makeBackgroundTransparent Mat original is empty");
+
             //need to fix resize bg_image
-            if(bg_image.Size() != alpha_image.Size())
+            var w = bg_image.Width;
+            var h = bg_image.Height;
+            OpenCvSharp.Size s = new(640, 480);
+            if (bg_image.Size() != alpha_image.Size())
             {
-                bg_image.Resize(alpha_image.Size());
+                //bg_image.Resize(alpha_image.Size());
+                bg_image.Resize(s);
+                
             }
             Mat new_mat = alpha_image.Clone();
             for (int y = 0; y < alpha_image.Rows; ++y)
@@ -161,7 +168,7 @@ namespace DatasetImageProcessing
             Cv2.Dilate(_image_canny,_image_dilation, element:new Mat());
 
             //fill the outlines of the canny edges
-            Mat _image_filled_lines = fillOutlines( _image_dilation );
+            Mat _image_filled_lines = fillOutlines( _image_canny );
 
             //get contours of image
             var contoursExternalForeground = Cv2.FindContoursAsArray(_image_filled_lines, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
