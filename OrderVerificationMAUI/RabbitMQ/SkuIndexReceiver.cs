@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -82,7 +83,11 @@ public class SkuIndexReceiver : IDisposable {
 			//Deserialize body to _ReceiveStruct
 			_ReceiveStruct received = JsonSerializer.Deserialize<_ReceiveStruct>(body);
 
+			Debug.WriteLine("Request for sku index from sku: {0}, with vendor: {1} started.", received.sku, received.vendor);
+			
 			response = _function(received.sku, received.vendor);
+			
+			Debug.WriteLine("Request for sku index from sku: {0}, with vendor: {1} sending response: {2}", received.sku, received.vendor, response);
 		}
 		catch (Exception exception) {
 			Console.WriteLine($" [.] {exception.Message}");

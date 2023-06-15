@@ -12,6 +12,7 @@ public class ImageIndex {
 		_dataset_path = dataset_path;
 		if (_dataset_path == null || !(_dataset_path != null && Directory.Exists(_dataset_path))) {
 			throw new ArgumentException("no dataset path");
+			throw new ArgumentNullException(paramName: nameof(dataset_path), message: "Dataset path does not exist");
 		}
 	}
 
@@ -36,7 +37,7 @@ public class ImageIndex {
 		createSkuIndexesFileIfNotExist(vendor);
 
 		//sku indexes path
-		string sku_indexes_path = _dataset_path + vendor + "\\" + _sku_indexes_filename;
+		string sku_indexes_path = Path.Combine(_dataset_path, vendor + "/" + _sku_indexes_filename);
 				
 		//read sku indexes file
 		var sku_indexes = readJsonFile(sku_indexes_path);
@@ -65,22 +66,19 @@ public class ImageIndex {
 	
 	//check if vendor folder exist in the dataset path	
 	private bool checkVendorDirExist(string vendor) {
-		return Directory.Exists(path: _dataset_path + vendor + "\\");
+		return Directory.Exists(path: Path.Combine(_dataset_path, vendor + "/"));
 	}
 	
 	//check if vendor sku exist in the dataset path	
 	private bool checkSkuDirExist(long sku, string vendor) {
-		return Directory.Exists(path: _dataset_path + vendor + "\\" + sku + "\\");
+		return Directory.Exists(path: Path.Combine(_dataset_path, vendor + "/" + sku + "/"));
 	}
 
 	//check if vendor folder exist in the dataset path and if not create the folder
 	private void createVendorDirIfNotExist(string vendor) {
 		if (!checkVendorDirExist(vendor)) {
-			Debug.WriteLine("creating vendor dir");
-			Directory.CreateDirectory(path: _dataset_path + vendor + "\\");
-		}
-		else {
-			Debug.WriteLine("vendor dir exist");
+			Debug.WriteLine("Vendor directory doesn't exist, creating...");
+			Directory.CreateDirectory(path: Path.Combine(_dataset_path, vendor + "/"));
 		}
 	}
 
@@ -88,7 +86,7 @@ public class ImageIndex {
 	private void createSkuIndexesFileIfNotExist(string vendor) {
 		createVendorDirIfNotExist(vendor);
 
-		var file_path = _dataset_path + vendor + "\\" + _sku_indexes_filename;
+		var file_path = Path.Combine(_dataset_path, vendor + "/" + _sku_indexes_filename);
 
 		if (!File.Exists(path: file_path)) {
 			var file_stream =File.Create(path: file_path);
@@ -120,7 +118,7 @@ public class ImageIndex {
                 json_string = File.ReadAllText(file_path);
             }
             catch {
-                Debug.WriteLine("ReadAllText could not read file");
+                Debug.WriteLine("Function readJsonFile in ImageIndex: File.ReadAllText could not read file");
             }
         }
         
@@ -144,15 +142,15 @@ public class ImageIndex {
             temp_dictionary = JsonSerializer.Deserialize<Dictionary<long, int>>(json_string);
         }
         catch (ArgumentNullException) {
-            Debug.WriteLine("JsonSerializer.Deserialize returned ArgumentNullException");
+            Debug.WriteLine("JsonSerializer.Deserialize returned ArgumentNullException, returning a new directory.");
             temp_dictionary = new Dictionary<long, int>();
         }
         catch (JsonException) {
-            Debug.WriteLine("JsonSerializer.Deserialize returned JsonException");
+            Debug.WriteLine("JsonSerializer.Deserialize returned JsonException, returning a new directory.");
             temp_dictionary = new Dictionary<long, int>();
         }
         catch (NotSupportedException) {
-            Debug.WriteLine("JsonSerializer.Deserialize returned NotSupportedException");
+            Debug.WriteLine("JsonSerializer.Deserialize returned NotSupportedException, returning a new directory.");
             temp_dictionary = new Dictionary<long, int>();
         }
 
