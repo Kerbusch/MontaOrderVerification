@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "RabbitMQ\Rabbit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutboundConsole", "OutboundConsole\OutboundConsole.csproj", "{F131D965-DECC-4F87-BC81-9BB54C783650}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatasetImageProcessing", "..\DatasetImageProcessing\DatasetImageProcessing.csproj", "{2D4F7156-C842-4771-8FE0-536F15DD1CF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatasetImageProcessing", "DatasetImageProcessing\DatasetImageProcessing.csproj", "{2D4F7156-C842-4771-8FE0-536F15DD1CF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSetImageProcessingTests", "..\DataSetImageProcessingTests\DataSetImageProcessingTests.csproj", "{E01CCC6A-2BE8-4055-8A3B-461431E625A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSetImageProcessingTests", "DataSetImageProcessingTests\DataSetImageProcessingTests.csproj", "{E01CCC6A-2BE8-4055-8A3B-461431E625A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

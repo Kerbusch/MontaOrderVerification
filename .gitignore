@@ -3,8 +3,22 @@
 ################################################################################
 
 /.vs
-/OrderVerificationMAUI/bin/Debug/net6.0-windows10.0.19041.0/win10-x64
+/idea
 /OrderVerificationMAUI/obj
 /OrderVerificationMAUI/bin
+/OrderVerificationMAUI/.idea
+
+/OrderVerificationMAUI/DatasetImageProcessing/obj
+/OrderVerificationMAUI/DatasetImageProcessing/bin
+
+/OrderVerificationMAUI/DatasetImageProcessingTests/obj
+/OrderVerificationMAUI/DatasetImageProcessingTests/bin
+
+/OrderVerificationMAUI/OutboundConsole/obj
+/OrderVerificationMAUI/OutboundConsole/bin
+
+/OrderVerificationMAUI/RabbitMQ/obj
+/OrderVerificationMAUI/RabbitMQ/bin
+
 
 

@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DatasetImageProcessing\DatasetImageProcessing.csproj" />
+      <ProjectReference Include="../DatasetImageProcessing\DatasetImageProcessing.csproj" />
     </ItemGroup>
 
 </Project>

@@ -14,7 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OrderVerificationMAUI\RabbitMQ\RabbitMQ.csproj" />
+    <ProjectReference Include="..\RabbitMQ\RabbitMQ.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="dataset\" />
   </ItemGroup>
 
 </Project>
