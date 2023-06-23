@@ -8,18 +8,18 @@ namespace OrderVerificationMAUI
         // Take picture and return the mat
         public static Mat takePicture()
         {
-            String liveStreamWindow = "Photo Window (Press any key to take a picture)";
+            String livestream_window = "Photo Window (Press any key to take a picture)";
 
-            Cv2.NamedWindow(liveStreamWindow, WindowFlags.Normal);
-            Cv2.SetWindowProperty(liveStreamWindow, WindowPropertyFlags.Fullscreen, 1);
+            Cv2.NamedWindow(livestream_window, WindowFlags.Normal);
+            Cv2.SetWindowProperty(livestream_window, WindowPropertyFlags.Fullscreen, 1);
 
             Mat frame = new Mat();
-            VideoCapture videoCapture = null;
+            VideoCapture video_capture = null;
             
             try {
-                videoCapture = new VideoCapture(0);
-                videoCapture.Set(VideoCaptureProperties.FrameWidth, 1280);
-                videoCapture.Set(VideoCaptureProperties.FrameHeight, 720);
+                video_capture = new VideoCapture(0);
+                video_capture.Set(VideoCaptureProperties.FrameWidth, 1280);
+                video_capture.Set(VideoCaptureProperties.FrameHeight, 720);
             }
             catch (OpenCvSharpException e) {
                 Debug.WriteLine(e.Message);
@@ -27,12 +27,12 @@ namespace OrderVerificationMAUI
             }
 
             while (Cv2.WaitKey(1) == -1) {
-                if (videoCapture.Read(frame)) {
-                    Cv2.ImShow(liveStreamWindow, frame);
+                if (video_capture.Read(frame)) {
+                    Cv2.ImShow(livestream_window, frame);
                 }
             }
 
-            videoCapture.Dispose();
+            video_capture.Dispose();
             Cv2.DestroyAllWindows();
 
             return frame;
