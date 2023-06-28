@@ -3,9 +3,10 @@
 ################################################################################
 
 /.vs
-/idea
+/.idea
 /OrderVerificationMAUI/obj
 /OrderVerificationMAUI/bin
+/OrderVerificationMAUI/.vs
 /OrderVerificationMAUI/.idea
 
 /OrderVerificationMAUI/DatasetImageProcessing/obj
@@ -16,6 +17,9 @@
 
 /OrderVerificationMAUI/OutboundConsole/obj
 /OrderVerificationMAUI/OutboundConsole/bin
+
+/OrderVerificationMAUI/OutboundConsoleTests/obj
+/OrderVerificationMAUI/OutboundConsoleTests/bin
 
 /OrderVerificationMAUI/RabbitMQ/obj
 /OrderVerificationMAUI/RabbitMQ/bin
