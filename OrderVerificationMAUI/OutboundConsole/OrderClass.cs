@@ -9,9 +9,9 @@ public class Order {
 	public bool is_complete { get; set; }
 	public DateTime created_on { get; init; }
 	
-	public struct RedundantAndMissingSkus {
-		public List<long> redundant_skus { get; init; }
-		public List<long> missing_skus { get; init; }
+	public struct OrderFeedback {
+		public long[] missing_skus { get; set; }
+		public long[] excess_skus { get; set; }
 	}
 
 	public Order() {
@@ -34,69 +34,91 @@ public class Order {
 	}
 
 	//Check if the order is complete based on the skus and the expected skus
-	public RedundantAndMissingSkus checkComplete() {
-		List<long> redundant_skus = new List<long>();
-		List<long> missing_skus = expected_skus.ToList();
+	public OrderFeedback? checkComplete() {
+		//walk trough the expected_skus array and remove sku if it is present.
+		long[] expected_skus = this.expected_skus;
+		List<long> excess_skus = new List<long>();
 		
-		//loop through all skus
-		foreach (long sku in skus) {
-			if (expected_skus.Contains(sku)) {
-				//remove sku from missing array
-				missing_skus.Remove(sku);
+		foreach (var sku in skus) {
+			if (expected_skus.Contains(sku) ) {
+				expected_skus = expected_skus.Where(val => val != sku).ToArray(); //remove sku from expected_skus
 			}
 			else {
-				//add skus to redundant array
-				redundant_skus.Add(sku);
+				excess_skus.Add(sku);
 			}
 		}
-		
-		//redundant_skus now contains a list of skus that are in the order but are not meant te be there.
-		//missing_skus now contains a list of skus that are not in the order but are expected to be there.
-		
-		//check if the redundant_skus and missing_skus array length is zero. if so the order is complete
-		if (redundant_skus.Count == 0 && missing_skus.Count == 0) {
-			is_complete = true;
-		}
-		else {
-			is_complete = false;
-		}
-		
-		//set the has been checked flag
-		has_been_checked = true;
 
-		//return the redundant and missing skus
-		return new RedundantAndMissingSkus {
-			redundant_skus = redundant_skus,
-			missing_skus = missing_skus
+		// the local variable: expected_skus now contains the missing sku's this can later be used to generate feedback
+		// the local variable: excess_skus now contains the excess sku's this can later be used to generate feedback
+			
+		//check if the expected_skus array length is zero. if so the order is complete
+		if (expected_skus.Length == 0 && excess_skus.Count == 0) {
+			is_complete = true;
+			has_been_checked = true;
+			return null;
+		}
+
+		//else return false and the order is not complete
+		is_complete = false;
+		has_been_checked = true;
+		return new Order.OrderFeedback {
+			missing_skus = expected_skus,
+			excess_skus = excess_skus.ToArray(),
 		};
 	}
 
-	public string getStatus(RedundantAndMissingSkus? redundant_and_missing_skus = null) {
+	public string getStatus(Order.OrderFeedback? order_feedback = null) {
 		//generate a string that describes the order status.
 		if (expected_skus == null || expected_skus.Length == 0) {
-			return "The order has no expected sku's. This could be an error.";
+			return "Order: " + id + ", has no expected sku's. This could be an error.";
 		}
 		
 		if (has_been_checked) {
 			if (is_complete) {
-				return "The order is complete!";
+				return "Order: " + id + ", is complete!";
 			}
 			//else
-			//TODO: add order feedback using redundant_and_missing_skus member
-			return "The order is incomplete";
+			
+			//generate order incomplete string
+			String line = "Order: " + id + ", is incomplete.";
+
+			if (order_feedback.HasValue) {
+				if (order_feedback.Value.missing_skus.Length != 0) {
+					line += " the missing skus are: " + string.Join(", ", order_feedback.Value.missing_skus) + ".";
+				}
+				
+				if (order_feedback.Value.excess_skus.Length != 0) {
+					line += " the excess skus are: " + string.Join(", ", order_feedback.Value.excess_skus) + ".";
+				}
+			}
+
+			return line;
 		}
 		//else
-		return "The order has not been checked. Run checkComplete first!";
+		
+		//order has not been check so checking:
+		var feedback = checkComplete();
+		return getStatus(feedback);
 	}
 	
-	public static bool operator ==(Order lhs, Order rhs) => 
-		lhs.id == rhs.id &&
-		lhs.skus == rhs.skus &&
-		lhs.expected_skus == rhs.expected_skus &&
-		lhs.has_been_checked == rhs.has_been_checked &&
-		lhs.is_complete == rhs.is_complete &&
-		lhs.created_on == rhs.created_on;
-	
+	public bool Equals ( Order obj )
+	{
+		return this.id == obj.id &&
+		       this.skus.SequenceEqual(obj.skus) &&
+		       this.expected_skus.SequenceEqual(obj.expected_skus) &&
+		       this.has_been_checked == obj.has_been_checked &&
+		       this.is_complete == obj.is_complete &&
+		       this.created_on == obj.created_on;
+	}
+
+	public static bool operator ==(Order lhs, Order rhs) =>
+		lhs.Equals(rhs);
+
 	public static bool operator !=(Order lhs, Order rhs) =>
-		!(lhs == rhs);
+		!lhs.Equals(rhs);
+
+	public override bool Equals(object? obj) {
+		// return base.Equals(obj);
+		return Equals(obj as Order);
+	}
 }
