@@ -79,6 +79,15 @@ public class SkuIndexRequest : IDisposable {
 		);
 	}
 	
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
+	public SkuIndexRequest() : 
+		this(
+			Settings.rabbitmq_hostname,
+			Settings.rabbitmq_username, 
+			Settings.rabbitmq_password
+		) 
+	{ }
+	
 	// Handler for the incoming messages. This checks the correlation id, converts the body to the output int
 	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
 		//check if correlation id is correct

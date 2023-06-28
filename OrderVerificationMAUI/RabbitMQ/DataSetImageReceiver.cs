@@ -62,6 +62,16 @@ public class DataSetImageReceiver : IDisposable {
 			autoAck: false,
 			consumer: _consumer);
 	}
+	
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
+	public DataSetImageReceiver(Action<long, string, Mat> function) : 
+		this(
+			Settings.rabbitmq_hostname,
+			Settings.rabbitmq_username, 
+			Settings.rabbitmq_password, 
+		function
+		) 
+	{ }
 
 	// Handler for the incoming messages. This converts the bytes to a Mat variable, so that is can later be used.
 	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {

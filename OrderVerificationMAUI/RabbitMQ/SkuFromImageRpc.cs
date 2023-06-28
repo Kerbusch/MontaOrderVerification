@@ -73,6 +73,15 @@ public class SkuFromImageRpc: IDisposable {
 			autoAck: true
 		);
 	}
+	
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
+	public SkuFromImageRpc() : 
+		this(
+			Settings.rabbitmq_hostname,
+			Settings.rabbitmq_username, 
+			Settings.rabbitmq_password
+		) 
+	{ }
 
 	// Handler for the incoming messages. This checks the correlation id, converts the body to the output long.
 	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {

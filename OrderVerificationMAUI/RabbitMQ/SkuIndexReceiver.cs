@@ -24,7 +24,7 @@ public class SkuIndexReceiver : IDisposable {
 	}
 
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
-	public SkuIndexReceiver(string hostname, string username, string password,Func<long, string, int> function ) {
+	public SkuIndexReceiver(string hostname, string username, string password, Func<long, string, int> function ) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
 			UserName = username,
@@ -65,6 +65,16 @@ public class SkuIndexReceiver : IDisposable {
 			autoAck: false
 		);
 	}
+	
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
+	public SkuIndexReceiver(Func<long, string, int> function) : 
+		this(
+			Settings.rabbitmq_hostname,
+			Settings.rabbitmq_username, 
+			Settings.rabbitmq_password,
+			function
+		) 
+	{ }
 
 	// Handler for the incoming messages. After the processing it publishes a message to the return queue
 	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {

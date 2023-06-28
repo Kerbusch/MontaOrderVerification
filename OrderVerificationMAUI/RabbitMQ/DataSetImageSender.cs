@@ -58,6 +58,15 @@ public class DataSetImageSender : IDisposable {
 			arguments: null
 		);
 	}
+	
+	//Constructor that creates the connection to the RabbitMQ server using the project settings
+	public DataSetImageSender() : 
+		this(
+			Settings.rabbitmq_hostname,
+			Settings.rabbitmq_username, 
+			Settings.rabbitmq_password
+		) 
+	{ }
 
 	// Function for sending the dataset images to the queue.
 	public void sendToDataSetImageToServer(long sku, string vendor, Mat image) {
