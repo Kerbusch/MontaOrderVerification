@@ -5,6 +5,7 @@ using RabbitMQ;
 class Run
 {
     static async Task Main() {
+        // DatasetImages dataset_images = new DatasetImages("../../../dataset");
         DatasetImages dataset_images = new DatasetImages("C:\\Users\\daank\\RiderProjects\\MontaOrderVerification\\DatasetImageProcessing\\dataset\\");
         
         using RabbitMQ.DataSetImageReceiver image_receiver = new DataSetImageReceiver(

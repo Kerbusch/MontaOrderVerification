@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -23,7 +24,7 @@ public class SkuIndexReceiver : IDisposable {
 	}
 
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer
-	public SkuIndexReceiver(string hostname, string username, string password,Func<long, string, int> function ) {
+	public SkuIndexReceiver(string hostname, string username, string password, Func<long, string, int> function ) {
 		var factory = new ConnectionFactory {
 			HostName = hostname,
 			UserName = username,
@@ -63,7 +64,19 @@ public class SkuIndexReceiver : IDisposable {
 			queue: _queue_name,
 			autoAck: false
 		);
+		
+		Debug.WriteLine("Sku Index Receiver: Consumer started");
 	}
+	
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
+	public SkuIndexReceiver(Func<long, string, int> function) : 
+		this(
+			Settings.rabbitmq_hostname,
+			Settings.rabbitmq_username, 
+			Settings.rabbitmq_password,
+			function
+		) 
+	{ }
 
 	// Handler for the incoming messages. After the processing it publishes a message to the return queue
 	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
@@ -82,7 +95,11 @@ public class SkuIndexReceiver : IDisposable {
 			//Deserialize body to _ReceiveStruct
 			_ReceiveStruct received = JsonSerializer.Deserialize<_ReceiveStruct>(body);
 
+			Debug.WriteLine("Request for sku index from sku: {0}, with vendor: {1} started.", received.sku, received.vendor);
+			
 			response = _function(received.sku, received.vendor);
+			
+			Debug.WriteLine("Request for sku index from sku: {0}, with vendor: {1} sending response: {2}", received.sku, received.vendor, response);
 		}
 		catch (Exception exception) {
 			Console.WriteLine($" [.] {exception.Message}");
@@ -98,6 +115,8 @@ public class SkuIndexReceiver : IDisposable {
 				basicProperties: replyProps,
 				body: json_bytes);
 			_channel.BasicAck(deliveryTag: basic_deliver_event_args.DeliveryTag, multiple: false);
+			
+			Debug.WriteLine("Sku Index Receiver: Done, sending acknowledgement");
 		}
 	}
 

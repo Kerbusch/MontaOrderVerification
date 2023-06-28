@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -77,7 +78,18 @@ public class SkuIndexRequest : IDisposable {
 			queue: _reply_queue_name,
 			autoAck: true
 		);
+		
+		Debug.WriteLine("Sku Index Request: Consumer started");
 	}
+	
+	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
+	public SkuIndexRequest() : 
+		this(
+			Settings.rabbitmq_hostname,
+			Settings.rabbitmq_username, 
+			Settings.rabbitmq_password
+		) 
+	{ }
 	
 	// Handler for the incoming messages. This checks the correlation id, converts the body to the output int
 	private void _handleMessage(object? sender, BasicDeliverEventArgs basic_deliver_event_args) {
@@ -85,6 +97,8 @@ public class SkuIndexRequest : IDisposable {
 		if (!_callback_mapper.TryRemove(basic_deliver_event_args.BasicProperties.CorrelationId, out var task_completion_source)) {
 			return;
 		}
+		
+		Debug.WriteLine("Sku Index Request: Got reply");
 			
 		//get body
 		var body = basic_deliver_event_args.Body.ToArray();
@@ -138,6 +152,8 @@ public class SkuIndexRequest : IDisposable {
 			basicProperties: properties,
 			body: json_string_bytes
 		);
+		
+		Debug.WriteLine("Sku Index Request: Send request");
 		
 		cancellation_token.Register(() => _callback_mapper.TryRemove(correlation_id, out _));
 		return task_completion_source.Task;
