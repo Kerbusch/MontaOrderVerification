@@ -61,6 +61,8 @@ public class DataSetImageReceiver : IDisposable {
 			queue: _queue_name,
 			autoAck: false,
 			consumer: _consumer);
+		
+		Debug.WriteLine("Dataset Image Receiver: Consumer started");
 	}
 	
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
@@ -84,6 +86,8 @@ public class DataSetImageReceiver : IDisposable {
 
 			//convert byte array to image
 			Mat imageMat = Cv2.ImDecode(received.image_data, ImreadModes.AnyColor);
+
+			Debug.WriteLine("Dataset Image Receiver: Received dataset image, now calling the member function");
 			
 			//call member function
 			_function(received.sku, received.vendor, imageMat);
@@ -99,6 +103,7 @@ public class DataSetImageReceiver : IDisposable {
 		finally {
 			//Acknowledge delivery
 			_channel.BasicAck(deliveryTag: basic_deliver_event_args.DeliveryTag, multiple: false);
+			Debug.WriteLine("Dataset Image Receiver: Done, sending acknowledgement");
 		}
 	}
 	

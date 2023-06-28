@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using OpenCvSharp;
 using RabbitMQ.Client;
 
@@ -91,6 +92,8 @@ public class DataSetImageSender : IDisposable {
 			basicProperties: properties,
 			body: json_string_bytes
 		);
+		
+		Debug.WriteLine("Dataset Image Sender: Published image with sku number: {0}, and vendor: {1}", sku, vendor);
 	}
 
 	//When this class is deleted this function is called

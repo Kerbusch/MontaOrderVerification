@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Text.Json;
 using OpenCvSharp;
 using RabbitMQ.Client;
@@ -72,6 +73,8 @@ public class SkuFromImageRpc: IDisposable {
 			queue: _reply_queue_name,
 			autoAck: true
 		);
+		
+		Debug.WriteLine("Sku From Image RPC: Consumer started");
 	}
 	
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
@@ -89,6 +92,8 @@ public class SkuFromImageRpc: IDisposable {
 		if (!_callback_mapper.TryRemove(basic_deliver_event_args.BasicProperties.CorrelationId, out var task_completion_source)) {
 			return;
 		}
+		
+		Debug.WriteLine("Sku From Image RPC: Got reply");
 			
 		//get body
 		var body = basic_deliver_event_args.Body.ToArray();
@@ -139,6 +144,9 @@ public class SkuFromImageRpc: IDisposable {
 		);
 
 		cancellation_token.Register(() => _callback_mapper.TryRemove(correlation_id, out _));
+		
+		Debug.WriteLine("Sku From Image RPC: Send request");
+		
 		return task_completion_source.Task;
 	}
 

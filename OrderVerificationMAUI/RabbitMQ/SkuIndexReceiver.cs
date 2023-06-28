@@ -64,6 +64,8 @@ public class SkuIndexReceiver : IDisposable {
 			queue: _queue_name,
 			autoAck: false
 		);
+		
+		Debug.WriteLine("Sku Index Receiver: Consumer started");
 	}
 	
 	//Constructor that creates the connection to the RabbitMQ server and starts the consumer using the project settings
@@ -113,6 +115,8 @@ public class SkuIndexReceiver : IDisposable {
 				basicProperties: replyProps,
 				body: json_bytes);
 			_channel.BasicAck(deliveryTag: basic_deliver_event_args.DeliveryTag, multiple: false);
+			
+			Debug.WriteLine("Sku Index Receiver: Done, sending acknowledgement");
 		}
 	}
 
