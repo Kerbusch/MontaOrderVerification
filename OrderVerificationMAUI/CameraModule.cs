@@ -55,6 +55,43 @@ namespace OrderVerificationMAUI
 
         }
 
+        public static List<Mat> takePictures(int num_pictures, int rotation_angle)
+        {
+            const string live_stream_window = "Photo Window (Press any key to take a picture)";
+
+            Cv2.NamedWindow(live_stream_window, WindowFlags.Normal);
+            Cv2.SetWindowProperty(live_stream_window, WindowPropertyFlags.Fullscreen, 1);
+
+            var frames = new List<Mat>();
+
+            using var video_capture = new VideoCapture(0);
+
+            for (int i = 0; i < num_pictures; i++)
+            {
+                // Rotate turntable by rotation_angle degrees here
+                Thread.Sleep(5000);
+
+                var frame = new Mat();
+                while (true)
+                {
+                    if (!video_capture.Read(frame))
+                        break;
+
+                    Cv2.ImShow(live_stream_window, frame);
+
+                    if (Cv2.WaitKey(1) != -1)
+                        break;
+                }
+
+                frames.Add(frame);
+            }
+
+            Cv2.DestroyAllWindows();
+
+            return frames;
+        }
+
+
         // makes all the pixels around the object transparent
 
         public static Mat makeBackgroundTransparent(Mat original) {
