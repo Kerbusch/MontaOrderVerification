@@ -7,7 +7,7 @@ namespace DatasetImageProcessing
     public class ImageProcessing
     {
         // Function to change background color to the given RGB color
-        public Mat changeColor(Mat org_image, Mat alpha_image, Color color)
+        public Mat changeColor(Mat org_image, Mat alpha_image, System.Drawing.Color color)
         {
             Mat new_mat = alpha_image.Clone();
             for (int y = 0; y < alpha_image.Rows; ++y)

@@ -3,7 +3,7 @@
 using OrderLogic;
 
 //Class for running the class above
-class Run {
+class RunOutboundConsole {
 	static async Task Main() {
 		//Add order
 		// using OrderData order_data = new OrderData("../../../file.json");

@@ -9,17 +9,17 @@ namespace DatasetImageProcessing
         private string _dataset_path; // "/dataset_folder/" not "/dataset_folder/vendor/sku"
         private ImageProcessing _image_processing = new ImageProcessing();
         public ImageIndex _image_index { get; }
-        private Color[] _colors = {
-            Color.Black,
-            Color.White,
-            Color.Red,
-            Color.Blue,
-            Color.Yellow,
-            Color.Green,
-            Color.BlueViolet,
-            Color.Pink,
-            Color.Orange,
-            Color.FromArgb(255, 210, 184, 87),
+        private System.Drawing.Color[] _colors = {
+            System.Drawing.Color.Black,
+            System.Drawing.Color.White,
+            System.Drawing.Color.Red,
+            System.Drawing.Color.Blue,
+            System.Drawing.Color.Yellow,
+            System.Drawing.Color.Green,
+            System.Drawing.Color.BlueViolet,
+            System.Drawing.Color.Pink,
+            System.Drawing.Color.Orange,
+            System.Drawing.Color.FromArgb(255, 210, 184, 87),
         };
 
         // Constructor that sets the _dataset_path and throws exceptions accordingly
@@ -91,7 +91,7 @@ namespace DatasetImageProcessing
             ImageLabeling.createLabelFile(bounding_box, image, sku, path, original_image_filename);
 
             //for each color that we want to change the background to
-            foreach (Color color in _colors) {
+            foreach (System.Drawing.Color color in _colors) {
                 //create filename for new image
                 string image_filename = + index + "_" + color.Name + ".png";
                 

@@ -7,13 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderVerificationMAUI", "Or
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{1051F020-A9FE-4E80-ADC5-892EB0333B50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutboundConsole", "OutboundConsole\OutboundConsole.csproj", "{F131D965-DECC-4F87-BC81-9BB54C783650}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OutboundConsole", "OutboundConsole\OutboundConsole.csproj", "{F131D965-DECC-4F87-BC81-9BB54C783650}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatasetImageProcessing", "DatasetImageProcessing\DatasetImageProcessing.csproj", "{2D4F7156-C842-4771-8FE0-536F15DD1CF5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSetImageProcessingTests", "DataSetImageProcessingTests\DataSetImageProcessingTests.csproj", "{E01CCC6A-2BE8-4055-8A3B-461431E625A5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutboundConsoleTests", "OutboundConsoleTests\OutboundConsoleTests.csproj", "{2B8DA6C0-5512-487E-96BE-FEF934AC34F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatasetImageProcessing", "DatasetImageProcessing\DatasetImageProcessing.csproj", "{2D4F7156-C842-4771-8FE0-536F15DD1CF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,14 +35,6 @@ Global
 		{2D4F7156-C842-4771-8FE0-536F15DD1CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D4F7156-C842-4771-8FE0-536F15DD1CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D4F7156-C842-4771-8FE0-536F15DD1CF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E01CCC6A-2BE8-4055-8A3B-461431E625A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E01CCC6A-2BE8-4055-8A3B-461431E625A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E01CCC6A-2BE8-4055-8A3B-461431E625A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E01CCC6A-2BE8-4055-8A3B-461431E625A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B8DA6C0-5512-487E-96BE-FEF934AC34F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B8DA6C0-5512-487E-96BE-FEF934AC34F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B8DA6C0-5512-487E-96BE-FEF934AC34F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B8DA6C0-5512-487E-96BE-FEF934AC34F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
